@@ -1,0 +1,2792 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>黎族记忆：船型屋与织绣文化展</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- 全局设置 --- */
+        :root {
+            --li-indigo: #173B52; /* 深海蓝 */
+            --li-red: #C23A38;    /* 朱砂红 */
+            --li-gold: #D4AF37;   /* 古铜金 */
+            --li-cream: #FFF7EB;  /* 米白 */
+            --glass-bg: rgba(255, 247, 235, 0.4); 
+            --glass-border: 1px solid rgba(255, 255, 255, 0.3);
+            --shadow-soft: 0 8px 32px rgba(23, 59, 82, 0.08);
+        }
+
+        body {
+            margin: 0;
+            overflow: hidden;
+            font-family: 'Noto Serif SC', "PingFang SC", serif;
+            background-color: var(--li-cream);
+            color: var(--li-indigo);
+            user-select: none;
+            /* 锦绣纹路背景 */
+            background-image: 
+                radial-gradient(circle at 50% 50%, rgba(194, 58, 56, 0.03) 0%, transparent 60%),
+                repeating-linear-gradient(45deg, rgba(23, 59, 82, 0.03) 0px, rgba(23, 59, 82, 0.03) 1px, transparent 1px, transparent 10px);
+            transition: background 0.5s ease, filter 0.5s ease;
+        }
+
+        /* --- 动态背景类 --- */
+        body.dark-mode {
+            background-color: #050510;
+            background-image: 
+                radial-gradient(#ffffff 1px, transparent 1px),
+                radial-gradient(#ffffff 1px, transparent 1px);
+             background-size: 40px 40px;
+        }
+        
+        /* --- 落地页 (Landing Page) --- */
+        #landing-page {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: var(--li-cream);
+            /* 叠加纹理 */
+            background-image: 
+                radial-gradient(circle at 50% 50%, rgba(194, 58, 56, 0.03) 0%, transparent 60%),
+                repeating-linear-gradient(45deg, rgba(23, 59, 82, 0.03) 0px, rgba(23, 59, 82, 0.03) 1px, transparent 1px, transparent 10px);
+            z-index: 1000;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            color: var(--li-indigo);
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+        
+        #landing-page.hidden { 
+            opacity: 0; 
+            visibility: hidden; /* 确保彻底隐藏不挡点击 */
+        }
+        
+        /* 装饰边框 - 上下模拟黎锦条纹 */
+        #landing-page::before, #landing-page::after {
+            content: ''; position: absolute; left: 0; width: 100%; height: 12px;
+            background: repeating-linear-gradient(90deg, 
+                var(--li-red) 0, var(--li-red) 20px, 
+                var(--li-gold) 20px, var(--li-gold) 40px,
+                var(--li-indigo) 40px, var(--li-indigo) 50px
+            );
+        }
+        #landing-page::before { top: 40px; }
+        #landing-page::after { bottom: 40px; }
+
+        .landing-content {
+            text-align: center;
+            padding: 60px;
+            border: 2px solid rgba(23, 59, 82, 0.1);
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(5px);
+            max-width: 500px;
+            position: relative;
+        }
+        
+        /* 四角装饰 */
+        .landing-content::before {
+            content: ''; position: absolute; top: -8px; left: -8px; right: -8px; bottom: -8px;
+            border: 2px solid var(--li-gold);
+            z-index: -1;
+        }
+
+        #landing-page h1 {
+            font-size: 4rem; 
+            font-weight: 700;
+            letter-spacing: 8px; 
+            margin: 0 0 20px 0;
+            color: var(--li-indigo);
+            text-shadow: 2px 2px 0px rgba(194, 58, 56, 0.1);
+        }
+        
+        #landing-page p { 
+            color: var(--li-red); 
+            font-size: 1.2rem; 
+            margin-bottom: 50px; 
+            font-weight: 700;
+            letter-spacing: 2px;
+            border-top: 1px solid rgba(23, 59, 82, 0.1);
+            border-bottom: 1px solid rgba(23, 59, 82, 0.1);
+            padding: 15px 0;
+        }
+        
+        #enter-btn {
+            background: rgba(23, 59, 82, 0.7); 
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            color: var(--li-cream);
+            border: 1px solid rgba(255,255,255,0.2);
+            padding: 15px 50px; 
+            font-size: 1.2rem;
+            cursor: pointer; 
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            font-family: 'Noto Serif SC', serif; 
+            letter-spacing: 4px;
+            box-shadow: 0 10px 25px rgba(23, 59, 82, 0.2);
+            position: relative;
+            overflow: hidden;
+            border-radius: 4px;
+        }
+        
+        #enter-btn::after {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(120deg, transparent, rgba(255,255,255,0.2), transparent);
+            transform: translateX(-100%);
+            transition: 0.5s;
+        }
+        
+        #enter-btn:hover { 
+            transform: translateY(-2px);
+            background: var(--li-red); 
+            box-shadow: 0 15px 35px rgba(194, 58, 56, 0.3);
+        }
+        #enter-btn:hover::after { transform: translateX(100%); }
+
+        /* --- Toast 调试提示 --- */
+        #toast-container {
+            position: fixed; top: 20px; right: 20px;
+            z-index: 2000; display: flex; flex-direction: column; gap: 10px;
+        }
+        .toast {
+            background: rgba(23,59,82,0.9); color: white;
+            padding: 10px 20px; border-radius: 4px; font-size: 0.9rem;
+            border-left: 4px solid var(--li-gold);
+            animation: slideIn 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            max-width: 300px;
+        }
+        @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+        /* --- 背景纹理 --- */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            opacity: 0.15;
+            background-image: 
+                radial-gradient(#173B52 1px, transparent 1px),
+                radial-gradient(#173B52 1px, transparent 1px);
+            background-size: 40px 40px;
+            background-position: 0 0, 20px 20px;
+        }
+
+        #canvas-container { width: 100vw; height: 100vh; display: block; }
+
+        /* --- UI 面板 --- */
+        #ui-layer {
+            position: absolute;
+            top: 40px; left: 40px;
+            width: 380px;
+            z-index: 10;
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 30px;
+            border-radius: 12px;
+            border: var(--glass-border);
+            box-shadow: var(--shadow-soft);
+            /* 分别定义过渡属性，确保长宽变化同步，从中心或角落优雅展开 */
+            transition: width 0.5s cubic-bezier(0.4, 0.0, 0.2, 1), 
+                        max-height 0.5s cubic-bezier(0.4, 0.0, 0.2, 1), /* 使用 max-height 过渡 */
+                        border-radius 0.5s cubic-bezier(0.4, 0.0, 0.2, 1),
+                        padding 0.5s cubic-bezier(0.4, 0.0, 0.2, 1),
+                        background-color 0.5s ease;
+            opacity: 0; pointer-events: none; /* 初始隐藏 */
+            overflow: hidden; /* 确保折叠时内容不溢出 */
+            height: auto; /* 默认高度自适应 */
+            max-height: 80vh; 
+            display: flex; flex-direction: column; /* 布局优化 */
+        }
+        #ui-layer.visible { opacity: 1; pointer-events: auto; }
+
+        /* 折叠状态 */
+        #ui-layer.collapsed {
+            width: 40px; 
+            max-height: 40px; /* 关键：使用 max-height 配合 transition 实现平滑高度变化 */
+            padding: 0;
+            border-radius: 50%;
+            background: rgba(255, 247, 235, 0.6);
+            /* 保持位置不变或微调 */
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        /* 折叠时隐藏内部除了切换按钮外的所有元素 */
+        #ui-layer.collapsed > *:not(.collapse-toggle) {
+            opacity: 0 !important; 
+            pointer-events: none; 
+            transition: opacity 0.2s ease-out, visibility 0s linear 0.2s; /* 延迟隐藏visibility以保留淡出效果 */
+            visibility: hidden;
+        }
+
+        /* 展开时逐渐显示内容 */
+        #ui-layer:not(.collapsed) > *:not(.collapse-toggle) {
+            opacity: 1; pointer-events: auto; transition: opacity 0.6s ease-out 0.3s; /* 延迟显示，等待面板展开 */
+        }
+
+        /* 切换按钮样式 */
+        .collapse-toggle {
+            position: absolute;
+            top: 10px; right: 10px;
+            width: 32px; height: 32px;
+            display: flex; flex-direction: column; 
+            align-items: center; justify-content: center; gap: 4px;
+            cursor: pointer;
+            border: none;
+            border-radius: 50%;
+            transition: all 0.3s;
+            z-index: 20;
+            background: transparent;
+            padding: 4px;
+        }
+        
+        .collapse-toggle span {
+            display: block;
+            width: 18px; height: 2px;
+            background-color: var(--li-indigo);
+            transition: all 0.3s;
+        }
+
+        .collapse-toggle:hover span {
+             background-color: var(--li-red);
+        }
+
+        /* 折叠状态下的切换按钮：居中 */
+        #ui-layer.collapsed .collapse-toggle {
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        /* 展开状态下显示为 X (第一根和第三根交叉，第二根隐藏) */
+        #ui-layer:not(.collapsed) .collapse-toggle span:nth-child(1) {
+             transform: translateY(6px) rotate(45deg);
+        }
+        #ui-layer:not(.collapsed) .collapse-toggle span:nth-child(2) {
+             opacity: 0;
+        }
+        #ui-layer:not(.collapsed) .collapse-toggle span:nth-child(3) {
+             transform: translateY(-6px) rotate(-45deg);
+        }
+        
+        /* 折叠状态下显示为三道杠 (恢复原状) */
+        #ui-layer.collapsed .collapse-toggle span:nth-child(1) {
+             transform: none;
+        }
+        #ui-layer.collapsed .collapse-toggle span:nth-child(2) {
+             opacity: 1;
+        }
+        #ui-layer.collapsed .collapse-toggle span:nth-child(3) {
+             transform: none;
+        }
+        
+        #ui-layer::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 20px; right: 20px;
+            height: 4px;
+            background: repeating-linear-gradient(90deg, var(--li-indigo), var(--li-indigo) 10px, var(--li-gold) 10px, var(--li-gold) 20px);
+            transition: opacity 0.3s;
+        }
+        #ui-layer.collapsed::before { opacity: 0; }
+
+        h1 { 
+            font-size: 2rem; margin: 10px 0 15px 0; 
+            color: var(--li-indigo); font-weight: 700;
+        }
+        
+        .subtitle-tag {
+            display: inline-block;
+            font-size: 0.8rem; letter-spacing: 1px;
+            color: var(--li-cream); background-color: var(--li-indigo);
+            padding: 4px 10px; border-radius: 4px;
+        }
+
+        p { font-size: 1rem; line-height: 1.6; color: rgba(23,59,82,0.9); margin-bottom: 20px; }
+
+        /* --- 优化的控制面板 --- */
+        .control-panel {
+            background: rgba(255,255,255,0.6);
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.8); /* 磨砂玻璃边缘 */
+            backdrop-filter: blur(8px);
+            box-shadow: 0 4px 15px rgba(23,59,82,0.05);
+        }
+
+        .control-group {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        
+        .control-group label { font-weight: 700; font-size: 0.9rem; min-width: 60px;}
+
+        /* 切换开关样式 (统一风格) */
+        .toggle-switch {
+            display: flex;
+            background: rgba(23, 59, 82, 0.08); /* 浅灰底，增加对比 */
+            border-radius: 20px;
+            padding: 3px;
+            position: relative;
+            flex: 1;
+        }
+
+        .toggle-switch input { display: none; }
+        
+        .toggle-switch label {
+            flex: 1;
+            text-align: center;
+            justify-content: center;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 17px;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            z-index: 2; /* 确保文字在滑块上层 */
+            transition: color 0.3s ease;
+            color: rgba(23,59,82,0.6);
+        }
+        
+        .toggle-switch input:checked + label {
+            color: var(--li-cream); /* 选中变白字 */
+        }
+        
+        /* 滑块动画核心 */
+        .toggle-switch .slider {
+            position: absolute;
+            top: 3px; left: 3px; bottom: 3px;
+            width: calc(50% - 3px); /* 假设两项均分 */
+            background: var(--li-indigo);
+            border-radius: 17px;
+            z-index: 1;
+            transition: transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+            box-shadow: 0 2px 6px rgba(23,59,82,0.2);
+        }
+        
+        /* 第二个项目选中时，滑块移动 */
+        .toggle-switch input:nth-of-type(2):checked ~ .slider {
+            transform: translateX(100%);
+        }
+
+        .hint-text {
+            display: block; font-size: 0.75rem; color: rgba(23,59,82,0.5); margin-top: 5px;
+        }
+        
+        /* --- 右侧物品侧边栏 --- */
+        #artifact-sidebar {
+            position: absolute;
+            top: 40px; right: 40px;
+            width: 220px;
+            z-index: 10;
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            padding: 20px;
+            border-radius: 12px;
+            border: var(--glass-border);
+            box-shadow: var(--shadow-soft);
+            transform: translateX(120%); /* 默认隐藏 */
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        #artifact-sidebar.visible { transform: translateX(0); }
+        
+        #artifact-sidebar h3 {
+            margin: 0 0 15px 0; font-size: 1rem; border-bottom: 1px dashed rgba(23,59,82,0.2); padding-bottom: 8px;
+        }
+        
+        .artifact-item {
+            display: flex; align-items: center; gap: 10px;
+            padding: 10px; margin-bottom: 8px;
+            background: rgba(255,255,255,0.4);
+            border-radius: 8px; cursor: pointer;
+            transition: all 0.2s;
+            border: 1px solid transparent;
+        }
+        .artifact-item:hover { background: white; transform: translateX(-3px); }
+        .artifact-item.active {
+            background: var(--li-indigo); color: var(--li-cream);
+            border-color: var(--li-gold);
+        }
+
+        /* --- 生成器面板 --- */
+        #generator-panel {
+            position: absolute; right: 300px; top: 40px; width: 240px;
+            z-index: 15; 
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 20px; border-radius: 12px;
+            border: var(--glass-border);
+            box-shadow: var(--shadow-soft);
+            
+            /* 动画状态 */
+            opacity: 0; 
+            transform: translateX(20px) scale(0.95);
+            pointer-events: none;
+            transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+        #generator-panel.visible {
+            opacity: 1;
+            transform: translateX(0) scale(1);
+            pointer-events: auto;
+        }
+
+        #generator-panel h4 { margin: 0 0 15px 0; color: var(--li-indigo); border-bottom: 1px dashed rgba(23,59,82,0.2); padding-bottom: 10px; }
+        
+        .gen-control { margin-bottom: 12px; }
+        .gen-control label { display: block; font-size: 0.8rem; font-weight: 700; margin-bottom: 5px; color: rgba(23,59,82,0.7); }
+        .gen-control select, .gen-control input[type="color"] {
+            width: 100%;
+            border: 1px solid rgba(23,59,82,0.2); padding: 6px; border-radius: 6px;
+            background: rgba(255,255,255,0.8);
+            font-family: inherit;
+        }
+
+        .btn-group { display: flex; gap: 8px; margin-top: 15px; }
+        .btn-gen {
+            flex: 2; padding: 10px;
+            background: var(--li-indigo); color: white;
+            border: none; border-radius: 6px; cursor: pointer;
+            font-family: inherit; font-weight: bold;
+            transition: all 0.2s;
+            box-shadow: 0 4px 10px rgba(23, 59, 82, 0.2);
+        }
+        .btn-gen:hover { filter: brightness(1.1); transform: translateY(-1px); }
+        .btn-rand {
+            flex: 1; padding: 10px;
+            background: var(--li-gold); color: white;
+            border: none; border-radius: 6px; cursor: pointer;
+            font-size: 1.2rem;
+        }
+        .btn-rand:hover { filter: brightness(1.1); }
+
+        /* --- 导航栏 --- */
+        #nav-bar {
+            position: absolute;
+            bottom: 40px; left: 50%;
+            transform: translateX(-50%);
+            display: flex; gap: 20px; z-index: 20;
+            /* 移除父容器的 opacity: 0，让其始终在文档流中，但通过子元素控制显隐 */
+            pointer-events: none;
+        }
+        #nav-bar.visible { pointer-events: auto; }
+        
+        .nav-btn {
+            background: rgba(255, 247, 235, 0.3); 
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            padding: 12px 28px;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            min-width: 150px; 
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            
+            /* 初始状态：向下偏移且透明 */
+            transform: translateY(100px); 
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* 统一可见状态 */
+        #nav-bar.visible .nav-btn {
+            transform: translateY(0);
+            opacity: 1;
+            pointer-events: auto;
+        }
+        
+        /* [新增] 当左侧收起时，导航栏也隐藏 (hidden-down) */
+        #nav-bar.hidden-down .nav-btn {
+            opacity: 0;
+            transform: translateY(100px) !important; /* 强制覆盖 */
+            pointer-events: none;
+            transition-delay: 0s !important; /* 立即隐藏不需等待 */
+        }
+
+        /* 交错动画延迟 */
+        #nav-bar.visible .nav-btn:nth-child(1) { transition-delay: 0.1s; }
+        #nav-bar.visible .nav-btn:nth-child(2) { transition-delay: 0.2s; }
+        #nav-bar.visible .nav-btn:nth-child(3) { transition-delay: 0.3s; }
+
+        .nav-btn .icon { font-size: 1.6rem; margin-bottom: 6px; transition: transform 0.3s; }
+        .nav-btn:hover .icon { transform: scale(1.1); }
+        .nav-btn .text { font-weight: 700; color: inherit; font-size: 1rem; letter-spacing: 1px; }
+
+        /* Hover 状态 - 增强反馈 (优先级提高) */
+        #nav-bar.visible .nav-btn:hover {
+            background: rgba(255, 247, 235, 0.7); 
+            border-color: rgba(255, 255, 255, 0.7); 
+            transform: translateY(-8px) scale(1.05); /* 加上 scale */
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2), 0 0 20px rgba(255, 247, 235, 0.6);
+            z-index: 10;
+        }
+
+        /* Active 状态 */
+        .nav-btn.active {
+            background: rgba(255, 247, 235, 0.8); /* [修改] 改为纯色高亮，与悬浮亮度相近但更实 */
+            border: 2px solid rgba(255, 255, 255, 0.8); /* [修改] 边框不透明 */
+            color: inherit; /* [修改] 保持原有深色文字，不再反白 */
+            transform: translateY(-8px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15), 0 0 30px rgba(255, 255, 255, 0.6);
+            opacity: 1; /* 确保选中态不透明 */
+        }
+        
+        .nav-btn.active .text { color: inherit; font-weight: 800; } 
+        .nav-btn.active .icon { color: inherit; transform: scale(1.1); text-shadow: none; }
+
+        /* Loader */
+
+        /* --- Loading 动画 --- */
+        #loader {
+            position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 30; pointer-events: none;
+            display: flex; flex-direction: column; align-items: center;
+            color: var(--li-indigo);
+            display: none; /* 默认不显示，根据JS控制 */
+        }
+        .spinner {
+            width: 40px; height: 40px;
+            border: 3px solid rgba(23,59,82,0.1);
+            border-top-color: var(--li-indigo);
+            border-radius: 50%;
+            animation: spin 1s infinite linear;
+            margin-bottom: 15px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* 全局淡入动画 */
+        .fade-in-ui { animation: fadeInUI 0.6s ease-out forwards; opacity: 0; }
+        @keyframes fadeInUI { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        /* 废弃，因为我们已经通过 class 统一控制 transition */
+        /* @keyframes fadeInNav { ... } */
+
+        #ui-layer { animation: fadeInUI 0.8s ease-out 0.5s forwards; }
+        /* 移除 #nav-bar 的 fadeInNav 动画，完全由 JS 的 .visible 类控制 */
+        /* #nav-bar { animation: fadeInNav ... } */
+        /* --- 标注点系统 --- */
+        #annotation-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 50;
+            display: none; /* 默认隐藏, 根据状态开启 */
+        }
+        
+        .annotation-point {
+            position: absolute; width: 24px; height: 24px;
+            background: radial-gradient(circle, rgba(255,255,255,1) 30%, rgba(255,255,255,0.4) 100%);
+            border-radius: 50%;
+            cursor: pointer;
+            pointer-events: auto;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 10px rgba(255,255,255,0.8);
+            transition: transform 0.2s, opacity 0.2s;
+        }
+        
+        .annotation-point:hover { transform: translate(-50%, -50%) scale(1.3); }
+        .annotation-point.hidden { opacity: 0; pointer-events: none; }
+        
+        /* --- 图片查看器 (居中放大版) --- */
+        #image-viewer {
+            position: fixed; 
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            width: 800px; 
+            max-width: 90vw;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 15px;
+            border-radius: 20px;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.5);
+            z-index: 2000;
+            display: block; /* 始终 block，用 opacity/pointer-events 控制 */
+            border: var(--glass-border);
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+            visibility: hidden;
+        }
+        #image-viewer.visible { 
+            visibility: visible;
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+            pointer-events: auto;
+        }
+        
+        #image-viewer .img-container {
+            width: 100%; 
+            display: flex; justify-content: center; align-items: center;
+            overflow: hidden; border-radius: 12px;
+            background: rgba(0,0,0,0.1);
+            position: relative; cursor: grab;
+            min-height: 300px; 
+        }
+
+        #image-viewer img {
+            max-width: 100%; max-height: 80vh;
+            object-fit: contain;
+            border-radius: 8px; display: block;
+            transition: transform 0.1s ease-out;
+        }
+
+        /* --- 标注提示词 --- */
+        #anno-tooltip {
+            position: fixed;
+            background: rgba(255, 255, 255, 0.4); /* 毛玻璃背景 */
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            color: var(--li-indigo);
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            pointer-events: none;
+            z-index: 3000;
+            display: none;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 8px 32px rgba(23, 59, 82, 0.15);
+        }
+        
+        #image-viewer .close-btn {
+            position: absolute; top: 15px; right: 15px;
+            background: var(--li-indigo); border: 2px solid rgba(255,255,255,0.8);
+            width: 36px; height: 36px; border-radius: 50%;
+            cursor: pointer; font-size: 1.5rem; color: white;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            z-index: 100;
+            transition: all 0.2s;
+        }
+        #image-viewer .close-btn:hover { background: var(--li-red); transform: rotate(180deg) scale(1.1); }
+
+        /* --- 地图查看器 --- */
+        #map-modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.5); /* 纯黑色透明，无蓝色倾向 */
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            display: flex; justify-content: center; align-items: center;
+            opacity: 0; pointer-events: none;
+            transition: opacity 0.3s;
+        }
+        #map-modal.active { opacity: 1; pointer-events: auto; }
+        
+        #map-content {
+            max-width: 85%; max-height: 85%;
+            position: relative;
+            background: var(--glass-bg); /* 改为毛玻璃样式 */
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            padding: 15px; border-radius: 20px;
+            border: var(--glass-border);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+        }
+        #map-content img {
+            max-width: 100%; max-height: 80vh; display: block;
+            border-radius: 12px;
+        }
+        #map-close {
+            position: absolute; top: -15px; right: -15px;
+            width: 40px; height: 40px; background: var(--li-indigo); /* 改色 */
+            color: white; border-radius: 50%; border: 3px solid white;
+            font-size: 1.5rem; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            transition: all 0.2s;
+        }
+        #map-close:hover { background: var(--li-red); transform: scale(1.1); }
+        
+        /* [新增] 文本进场动画 */
+        @keyframes fadeUpIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .anim-fade-up {
+            animation: fadeUpIn 1s cubic-bezier(0.22, 1, 0.36, 1) both;
+        }
+
+    </style>
+    
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/",
+                "three/examples/jsm/": "https://unpkg.com/three@0.160.0/examples/jsm/",
+                "3d-tiles-renderer": "https://esm.sh/3d-tiles-renderer@0.3.26?external=three"
+            }
+        }
+    </script>
+</head>
+<body>
+
+    <!-- 落地页 -->
+    <div id="landing-page">
+        <div class="landing-content">
+            <h1>黎族记忆</h1>
+            <p>船型屋营造技艺 · 黎族传统纺染织绣</p>
+            <button id="enter-btn">进入体验</button>
+        </div>
+    </div>
+
+    <!-- 动态标注提示框 -->
+    <div id="anno-tooltip"></div>
+    
+    <div id="image-viewer">
+        <button class="close-btn" onclick="this.parentElement.classList.remove('visible')">×</button>
+        <div class="img-container">
+            <img id="iv-img" src="" alt="View">
+        </div>
+    </div>
+
+    <div id="map-modal" onclick="if(event.target===this) toggleMap(false)">
+        <div id="map-content">
+            <button id="map-close" onclick="toggleMap(false)">×</button>
+            <img src="assets/pic/map.jpg" alt="Village Map" onerror="this.src='https://via.placeholder.com/800x600?text=Map+Missing'">
+        </div>
+    </div>
+
+
+    <!-- Toast Container -->
+    <div id="toast-container"></div>
+
+    <!-- UI 层 -->
+    <div id="ui-layer">
+        <button class="collapse-toggle" id="btn-ui-collapse" title="收起/展开面板">
+            <span></span><span></span><span></span>
+        </button>
+        <h1 id="main-title">黎族 · 船型屋</h1>
+        <div id="desc-content"></div> <!-- 动态展示图片区域 -->
+        <div id="description-content">
+            <p>
+            <span></span><span></span><span></span>
+        
+                船型屋是黎族最古老的民居形式，流行于海南岛。其外形像倒扣的船，以茅草为顶，木石为架。
+                这种建筑形式见证了黎族先民渡海而来的历史记忆，是人与自然和谐共生的典范。
+            </p>
+        </div>
+        
+        <div class="control-panel">
+            <div class="control-group">
+                <label>操作模式</label>
+                <div class="toggle-switch">
+                    <input type="radio" id="mode-orbit" name="viewMode" value="orbit" checked>
+                    <label for="mode-orbit" title="自由浏览">环绕</label>
+                    <input type="radio" id="mode-drone" name="viewMode" value="drone">
+                    <label for="mode-drone" title="第一人称飞行">无人机</label>
+                    <div class="slider"></div>
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <label>场景标注</label>
+                <!-- 容器确保 toggle 和上面的对齐，同时容纳 map 按钮 -->
+                <div style="flex: 1; display: flex; align-items: center; gap: 10px;">
+                    <div class="toggle-switch">
+                        <input type="radio" id="anno-on" name="annoToggle" value="on" checked>
+                        <label for="anno-on">开</label>
+                        <input type="radio" id="anno-off" name="annoToggle" value="off">
+                        <label for="anno-off">关</label>
+                        <div class="slider"></div>
+                    </div>
+                    <!-- 地图按钮：通过弹出图片查看器实现放大功能 -->
+                    <button id="map-trigger-btn" onclick="showAnnotationImage({img: 'assets/pic/map.jpg'})" title="查看全景地图" 
+                        style="display: flex; align-items: center; justify-content: center; padding: 0 12px; height: 32px; border-radius: 16px; border: none; background: var(--li-indigo); color: white; cursor: pointer; white-space: nowrap; box-shadow: 0 2px 5px rgba(0,0,0,0.15); font-weight: bold; font-family: inherit; line-height: 1;">
+                        地图
+                    </button>
+                </div>
+            </div>
+            <small class="hint-text">无人机操作: WASD 移动 | Q 上升 | E 下降</small>
+        </div>
+    </div>
+
+    <!-- 右侧物品侧边栏 -->
+    <div id="artifact-sidebar">
+        <h3>特色文物</h3>
+        <div id="artifact-list">
+            <!-- JS 动态生成 -->
+        </div>
+    </div>
+
+    <!-- 图腾生成器面板 (位置调整: right: 400px 避免遮挡侧边栏) -->
+    <div id="generator-panel" style="right: 320px; top: 40px;">
+        <h4>黎锦图案生成器</h4>
+        <div class="gen-control">
+            <label>图腾纹样</label>
+            <select id="gen-shape">
+                <option value="rhombus">菱形纹 (光影)</option>
+                <option value="human">人纹 (祖先)</option>
+                <option value="frog">蛙纹 (多子)</option>
+                <option value="flower">花章纹 (吉祥)</option>
+                <option value="geometry">几何纹 (天地)</option>
+            </select>
+        </div>
+        <div class="gen-control">
+            <label>布局结构</label>
+            <select id="gen-layout">
+                <option value="horizontal">水平条带 (传统)</option>
+                <option value="cross">交叉菱格 (华彩)</option>
+                <option value="diagonal">斜向纹理 (现代)</option>
+                <option value="scatter">散点布局 (星空)</option>
+            </select>
+        </div>
+        <div class="gen-control">
+            <label>纹样主色</label>
+            <input type="color" id="gen-color1" value="#C23A38">
+        </div>
+        <div class="gen-control">
+             <label>织锦底色</label>
+             <input type="color" id="gen-color2" value="#173B52">
+        </div>
+        <div class="btn-group">
+            <button id="gen-btn" class="btn-gen">✨ 生成织锦</button>
+            <button id="rand-btn" class="btn-rand" title="随机配色">🎲</button>
+        </div>
+    </div>
+
+    <div id="loader">
+        <div class="spinner"></div>
+        <div id="loader-text">Loading...</div>
+    </div>
+
+    <div id="nav-bar">
+        <!-- 移除 onclick 内联绑定，改用 JS 绑定以防冲突，保留 data 属性 -->
+        <button class="nav-btn active" data-type="village">
+            <span class="icon">🏘️</span>
+            <span class="text">白查村全景</span>
+        </button>
+        <button class="nav-btn" data-type="artifact">
+            <span class="icon">🧶</span>
+            <span class="text">文化特色</span>
+        </button>
+    </div>
+
+    <div id="canvas-container"></div>
+    
+    <!-- 全局错误捕获层 -->
+    <div id="debug-layer" style="position:fixed; bottom:0; left:0; width:100%; max-height:200px; overflow:auto; background:rgba(0,0,0,0.8); color:#ffdddd; font-family:monospace; font-size:12px; z-index:9999; display:none; padding:10px; user-select: text; -webkit-user-select: text;"></div>
+    <script>
+        // 在 module 脚本运行前捕获错误
+        window.addEventListener('error', function(event) {
+            const dbg = document.getElementById('debug-layer');
+            dbg.style.display = 'block';
+            dbg.innerHTML += `<div>[JS Error] ${event.message} at ${event.filename}:${event.lineno}</div>`;
+        });
+        window.addEventListener('unhandledrejection', function(event) {
+            // 忽略 AbortError (通常是 fetch 取消)
+            if (event.reason && (event.reason.name === 'AbortError' || event.reason.message?.includes('aborted'))) {
+                event.preventDefault();
+                return;
+            }
+            const dbg = document.getElementById('debug-layer');
+            dbg.style.display = 'block';
+            dbg.innerHTML += `<div>[Promise Fail] ${event.reason}</div>`;
+        });
+    </script>
+
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+        import { PointerLockControls } from 'three/addons/controls/PointerLockControls.js';
+        import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+        // Post-processing imports
+        import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+        import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+        import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+        import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
+        // 3D Tiles
+        import { TilesRenderer } from '3d-tiles-renderer';
+
+        // --- 全局调试吐司 (强化版) ---
+        window.showToast = function(msg) {
+            const container = document.getElementById('toast-container');
+            if(!container) return; // 防御性编程
+            const el = document.createElement('div');
+            el.className = 'toast';
+            el.innerText = msg;
+            container.appendChild(el);
+            setTimeout(() => el.remove(), 5000);
+            console.log('[Toast]', msg);
+        }
+
+        // 脚本加载立即提示
+        // showToast("核心脚本已加载，等待操作...");
+
+        // [新增] 动画重启工具
+        function triggerAnim(el) {
+            if(!el) return;
+            el.classList.remove('anim-fade-up');
+            void el.offsetWidth; // 强制重绘
+            el.classList.add('anim-fade-up');
+        }
+
+        // --- 场景与渲染器初始化 ---
+        const container = document.getElementById('canvas-container');
+        const scene = new THREE.Scene();
+        // 关键修复：背景设为 null 以展示 CSS 米色背景
+        scene.background = null; 
+        scene.fog = new THREE.FogExp2(0xFFF7EB, 0.005); 
+
+        const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 8000000); // 增加远裁剪面以适应大场景
+        camera.position.set(15, 8, 15);
+
+        // alpha: true 允许透明，让 CSS 背景透出来
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true }); 
+        renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.toneMapping = THREE.ACESFilmicToneMapping;
+        renderer.toneMappingExposure = 1.2;
+        renderer.shadowMap.enabled = true;
+        renderer.shadowMap.type = THREE.PCFSoftShadowMap; // 更柔和的阴影
+        
+        // 渲染器清除色设为全透
+        renderer.setClearColor(0x000000, 0);
+        
+        container.appendChild(renderer.domElement);
+
+        // --- 后期处理 ---
+        const composer = new EffectComposer(renderer);
+        const renderPass = new RenderPass(scene, camera);
+        // RenderPass 清除色也设为全透
+        renderPass.clearColor = new THREE.Color(0x000000);
+        renderPass.clearAlpha = 0;
+        composer.addPass(renderPass);
+        
+        // [已移除] 辉光 Pass (与点云模式一同移除)
+        // const bloomPass = new UnrealBloomPass(...)
+        
+        const outputPass = new OutputPass();
+        composer.addPass(outputPass);
+
+        // --- 控制器 ---
+        const controls = new OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+        controls.maxPolarAngle = Math.PI / 2 - 0.05;
+        controls.minDistance = 2;
+        controls.maxDistance = 300;
+        
+        const pointerControls = new PointerLockControls(camera, renderer.domElement);
+        
+        // [修复方案] 使用事件捕获拦截异常的鼠标跳跃
+        // 当 movementX/Y 异常大时 (通常发生在解除锁定或刚锁定时)，禁止该事件传播给 PointerLockControls
+        document.addEventListener('mousemove', (event) => {
+            if (pointerControls.isLocked) {
+                // 阈值设为 300 像素，正常甩鼠标很难超过这个值
+                if (Math.abs(event.movementX) > 300 || Math.abs(event.movementY) > 300) {
+                    event.stopImmediatePropagation(); // 阻止后续监听器(包括控制器的)接收此事件
+                    return;
+                }
+            }
+        }, { capture: true }); // capture: true 确保我们在控制器之前处理事件
+
+        // --- 灯光系统 ---
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+        scene.add(ambientLight);
+        
+        const sunLight = new THREE.DirectionalLight(0xfff1dd, 2.5);
+        sunLight.position.set(50, 100, 50);
+        sunLight.castShadow = true;
+        scene.add(sunLight);
+        
+        const fillLight = new THREE.HemisphereLight(0xffffff, 0x080820, 0.5); 
+        scene.add(fillLight);
+
+        // 环境光: 降低 intensity 增大 darkness
+        // 之前 0.6 可能因为 tone mapping 原因显得太亮/灰
+        ambientLight.intensity = 0.3; 
+        
+        // 关键：修改 Tone Mapping 以获得更好的对比度和深黑
+        renderer.toneMapping = THREE.ACESFilmicToneMapping;
+        renderer.toneMappingExposure = 1.0;
+
+        // 特殊光源：文物展示灯 (Key Light)
+        // [修复] 将光源添加到相机上，使其跟随视角，而不是固定在场景中
+        // [新增] 调整相机位置，拉近一点以适应小物体
+        camera.position.set(4, 2, 4); 
+        camera.lookAt(0, 0, 0);
+
+        const keyLight = new THREE.SpotLight(0xffffff, 5); // 降低强度 (从 800 -> 5，因为相机距离近)
+        keyLight.position.set(2, 4, 5); // 稍微偏上偏右
+        keyLight.angle = Math.PI / 3; // 更宽的角度 (60度)
+        keyLight.penumbra = 0.5; // 更柔和的边缘
+        keyLight.decay = 0; // 平行光衰减特性，防止过暗
+        camera.add(keyLight); // 绑定到相机
+        scene.add(camera); // 确保相机在场景中 (通常默认就在，但显式添加是个好习惯)
+
+        // [删除] 移除了右上角坐标轴 (View Gizmo)
+        const axesScene = new THREE.Scene(); // 依然保留空 Scene 以防报错，但不添加任何内容
+        const axesCamera = new THREE.PerspectiveCamera(50, 1, 1, 1000);
+        
+        // --- 射线检测 (TODO: 临时调试用) ---
+        const raycaster = new THREE.Raycaster();
+        const mouse = new THREE.Vector2();
+
+        // --- 音效系统 ---
+        const listener = new THREE.AudioListener();
+        camera.add(listener);
+        const startAudio = () => {
+             const audioLoader = new THREE.AudioLoader();
+             const sound = new THREE.Audio(listener);
+             audioLoader.load('assets/SynthSound.mp3', function(buffer) {
+                sound.setBuffer(buffer);
+                sound.setLoop(true); // 确保循环
+                sound.setVolume(0.4);
+                sound.play();
+                // showToast('环境音效已启动');
+             }, undefined, (err) => console.log('音频加载失败: ' + err.message)); // 降低非关键音频的错误打扰
+        };
+
+        // --- 物品数据 ---
+        // scale 设为 'auto'，程序会自动计算缩放比例
+        const ARTIFACTS = [
+            { id: 'loom', name: '黎锦织机', model: 'assets/models/relic/weaving machine.glb', scale: 'auto' },
+            { id: 'belt', name: '黎族腰带', model: 'assets/models/relic/Li people\'s belt.glb', scale: 'auto' },
+            { id: 'cloth', name: '黎族服饰', model: 'assets/models/relic/cloth.glb', scale: 'auto', img: 'assets/pic/黎族服饰.jpg' },
+            { id: 'ha_brocade', name: '哈方言织锦', model: 'assets/models/relic/Li people\'s Ha dialect brocade.glb', scale: 'auto' },
+            { id: 'meifu_brocade', name: '美孚方言织锦', model: 'assets/models/relic/Li people\'s Meifu dialect brocade.glb', scale: 'auto' },
+            { id: 'sculpture', name: '文昌灰塑', model: 'assets/models/relic/WENCHANG ASH SCULPTURE.glb', scale: 'auto', img: 'assets/pic/文昌灰塑.jpg' },
+            { id: 'stool', name: '牛皮凳', model: 'assets/models/relic/Cowhide stool.glb', scale: 'auto', desc: '牛皮凳的制作技艺以牛皮、藤条和当地黎语称作“赛胜”的乔木为原料，全程依赖手工完成。制作过程主要包括备料、晾晒、烟熏防虫、框架组装和绷牛皮等工序，制作周期快则四五天，慢则十余天。绷牛皮时需要团队协作，涉及浸泡、刮毛、晒干和固定等步骤。该技艺的传承依靠口传心授的方式。' },
+            { id: 'pottery', name: '原始制陶', model: 'assets/models/relic/pottery.glb', scale: 'auto', img: 'assets/pic/原始制陶.jpg' },
+            { id: 'canoe', name: '独木器具', model: 'assets/models/relic/canoe.glb', scale: 'auto', img: 'assets/pic/独木器具.jpg' },
+            { id: 'bamboo', name: '藤竹编技艺', model: 'assets/models/relic/BAMBOO AND RATTAN WEAVING.glb', scale: 'auto', img: 'assets/pic/藤竹编技艺.jpg' },
+            { id: 'shell', name: '海南贝雕', model: 'assets/models/relic/SHELL CARVING.glb', scale: 'auto', img: 'assets/pic/海南贝雕.jpg' },
+            { id: 'generator', name: '黎锦图案生成器', type: 'generator' }
+        ];
+
+        // --- 状态对象 (提前声明) ---
+        const lightState = {
+            artifactLight: false
+        };
+
+        // --- 状态管理 ---
+        let currentMode = ''; 
+        let currentArtifactIdx = 0;
+        let droneMode = false;
+        
+        // [新增] 追踪当前正在请求加载的文物 ID，防止异步加载导致的竞态条件
+        let pendingArtifactRequestId = 0;
+
+        let activeModel = null;     // GLB 模型 或 生成器Plane
+        let tilesRenderer = null;   // 3D Tiles 渲染器
+        
+        // 标注状态管理
+        const annotationState = {
+            enabled: true,
+            points: [
+                { pos: new THREE.Vector3(32.31, -6.76, -2.05), img: 'assets/pic/隆闺.jpg' },
+                { pos: new THREE.Vector3(19.12, -7.05, -4.04), img: 'assets/pic/落地船型屋建筑图示.jpg' },
+                { pos: new THREE.Vector3(40.70, -7.64, 12.55), img: 'assets/pic/船型屋平面图.jpg' },
+                { pos: new THREE.Vector3(-67.1, -16.8, 17.2), img: 'assets/pic/轮耕养林.jpg' },
+                { pos: new THREE.Vector3(-2.5, -7.4, -5.7), img: 'assets/pic/黎桐人家.jpg' },
+                { pos: new THREE.Vector3(-25.6, -8.5, -5.6), img: 'assets/pic/白查初建，始见于文.jpg' },
+                { pos: new THREE.Vector3(13.2, -7.4, 25.6), img: 'assets/pic/黎族传统聚落特征.jpg' },
+                { pos: new THREE.Vector3(-38.3, -15.2, 48.9), img: 'assets/pic/黎族传统农业.jpg' },
+                { pos: new THREE.Vector3(-7.6, -8.3, 23.6), img: 'assets/pic/黎族谷仓.jpg' },
+                { pos: new THREE.Vector3(44.3, -9.3, -10.2), img: 'assets/pic/村庄生计，繁衍生息.jpg' }
+            ],
+            group: new THREE.Group() // 使用 THREE.Group 管理 3D 标注点，解决延迟跟随问题
+        };
+        
+        // 图腾生成器变量
+        let generatorPlane = null;
+        let generatorTexture = null;
+
+        // --- 落地页逻辑 ---
+        function initLandingPage() {
+            console.log("[App] Initializing Landing Page...");
+            const btn = document.getElementById('enter-btn');
+            if(btn) {
+                btn.addEventListener('click', () => {
+                    showToast("正在初始化场景...");
+                    // console.log("[App] Enter button clicked");
+
+                    const landing = document.getElementById('landing-page');
+                    if (landing) landing.classList.add('hidden');
+                    
+                    const ui = document.getElementById('ui-layer');
+                    if (ui) ui.classList.add('visible');
+
+                    const nav = document.getElementById('nav-bar');
+                    if (nav) nav.classList.add('visible');
+                    
+                    try {
+                        // 尝试播放音频
+                        if (listener && listener.context && listener.context.state === 'suspended') {
+                            listener.context.resume();
+                        }
+                        startAudio();
+                    } catch(e) {
+                        console.warn("Audio init failed:", e);
+                        // showToast("音频启动失败，但继续加载");
+                    }
+                    
+                    // 首次加载场景
+                    setTimeout(() => {
+                        try {
+                            switchScene('village');
+                        } catch (e) {
+                            console.error(e);
+                            showToast("场景加载出错: " + e.message);
+                        }
+                    }, 100); // 稍微延迟确保UI过渡不卡顿
+                });
+            } else {
+                showToast("严重错误：找不到进入按钮");
+            }
+        }
+
+        // --- 点云模式切换逻辑 (已彻底删除) ---
+        // 曾用于 toggleVisualStyle 和 processTileContent
+        // ...
+
+        // --- 模型配置 ---
+        const MODELS = {
+            village: {
+                title: '黎族 · 船型屋村落',
+                tag: '3D Tiles 倾斜摄影',
+                desc: '本场景采用无人机倾斜摄影技术重建。船型屋聚落掩映在椰林之中，您可以切换到“无人机模式”自由飞翔，探索古村落的每一个角落。',
+                camera: new THREE.Vector3(0, 20, 60),
+                fov: 50 // [新增] 保存各自的 FOV
+            },
+            artifact: {
+                title: '黎族 · 纺染织绣',
+                tag: '国家级非遗',
+                desc: '',
+                camera: new THREE.Vector3(0, 0, 8), // [修改] 相机改到正前方，不共用大场景的斜角
+                fov: 35 // [新增] 改用更窄的 FOV (长焦镜头感)，使物体看起来更大更平整
+            }
+        };
+
+        const moveState = { forward: false, backward: false, left: false, right: false, up: false, down: false };
+        const velocity = new THREE.Vector3();
+        const direction = new THREE.Vector3();
+        const clock = new THREE.Clock();
+
+        function setupControls() {
+            document.addEventListener('keydown', (e) => {
+                switch(e.code) {
+                    case 'KeyW': moveState.forward = true; break;
+                    case 'KeyA': moveState.left = true; break;
+                    case 'KeyS': moveState.backward = true; break;
+                    case 'KeyD': moveState.right = true; break;
+                    case 'KeyQ': moveState.up = true; break;
+                    case 'KeyE': moveState.down = true; break;
+                }
+            });
+            document.addEventListener('keyup', (e) => {
+                switch(e.code) {
+                    case 'KeyW': moveState.forward = false; break;
+                    case 'KeyA': moveState.left = false; break;
+                    case 'KeyS': moveState.backward = false; break;
+                    case 'KeyD': moveState.right = false; break;
+                    case 'KeyQ': moveState.up = false; break;
+                    case 'KeyE': moveState.down = false; break;
+                }
+            });
+
+            document.querySelectorAll('input[name="viewMode"]').forEach(input => {
+                input.addEventListener('change', (e) => {
+                    const mode = e.target.value;
+                    if (mode === 'drone') {
+                        droneMode = true;
+                        controls.enabled = false;
+                        
+                        // [修复] 进入无人机模式前，重置相机 UP 向量，防止视角倾斜
+                        camera.up.set(0, 1, 0); 
+                        
+                        pointerControls.lock();
+                        showToast("进入无人机模式 (按 ESC 退出)");
+                    } else {
+                        droneMode = false;
+                        pointerControls.unlock();
+                        controls.enabled = true;
+                        
+                        // [修复] 退出无人机模式时，需要更新 OrbitControls 的 target
+                        // 否则它会立刻把相机拉回上一次的 target 位置（导致视角瞬移）
+                        // 正确做法：将 target 设置为当前相机正前方的一点
+                        const forward = new THREE.Vector3(0, 0, -1).applyQuaternion(camera.quaternion);
+                        controls.target.copy(camera.position).add(forward.multiplyScalar(20));
+                        controls.update(); 
+                    }
+                });
+            });
+
+            // [新增] 监听 PointerLock 状态，完善退出逻辑
+            document.addEventListener('pointerlockchange', () => {
+                const isLocked = (document.pointerLockElement === document.body || document.pointerLockElement === renderer.domElement);
+                
+                if (!isLocked && droneMode) {
+                    // 用户按 ESC 强制退出了锁定，我们需要同步 UI 和状态
+                    droneMode = false;
+                    controls.enabled = true;
+                    
+                    // 必不可少：同步 OrbitControls 的 target，防止视角跳变
+                    const forward = new THREE.Vector3(0, 0, -1).applyQuaternion(camera.quaternion);
+                    controls.target.copy(camera.position).add(forward.multiplyScalar(20));
+                    controls.update();
+                    
+                    // UI 反馈
+                    const orbitRadio = document.getElementById('mode-orbit');
+                    if (orbitRadio) orbitRadio.checked = true;
+                }
+            });
+
+            // 监听 PointerLock 状态变化，处理 ESC 退出情况以及状态同步
+            document.addEventListener('pointerlockchange', () => {
+                // 判断当前是否处于锁定状态
+                const isLocked = (document.pointerLockElement === document.body || document.pointerLockElement === renderer.domElement);
+                if (isLocked) {
+                    droneMode = true;
+                    controls.enabled = false;
+                    
+                    // [关键] 每次重新进入锁定时，重置相机 UP，避免歪头
+                    camera.up.set(0, 1, 0);
+
+                    // 同步 UI 状态
+                    const droneRadio = document.getElementById('mode-drone');
+                    if (droneRadio) droneRadio.checked = true;
+                } else {
+                    // 如果从锁定变成非锁定（例如按 ESC，或者切 TAB），我们强制回退到 Orbit 模式
+                    // 除非这里有特殊逻辑，比如暂停。但对于本应用，解锁即退出
+                    if (droneMode) {
+                        droneMode = false;
+                        controls.enabled = true;
+                        
+                        // [关键修复] 计算新的 Orbit Target，防止相机立刻弹回去
+                        // 我们让它看向当前相机前方 20 米的地方
+                        const forward = new THREE.Vector3(0, 0, -1).applyQuaternion(camera.quaternion);
+                        controls.target.copy(camera.position).add(forward.multiplyScalar(20));
+                        controls.update();
+
+                        const orbitRadio = document.getElementById('mode-orbit');
+                        if (orbitRadio) orbitRadio.checked = true;
+                    }
+                }
+            });
+
+            // 视觉风格切换监听 (已移除点云模式)
+            // document.querySelectorAll('input[name="visualStyle"]').forEach(...)
+            
+            // 绑定底部导航按钮
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                   // 向上寻找 button 元素
+                   const target = e.target.closest('button');
+                   if(target && target.dataset.type) {
+                       switchScene(target.dataset.type, target);
+                   }
+                });
+            });
+
+            // --- 悬停显示标注点名称 (新增) ---
+            // 拾取坐标点功能 (保留点击，但在 initAnnotations 中已移除 hover 显示 tooltip 的逻辑)
+            // 开启点击拾取，方便后续添加标注
+            let hoveredAnnotation = null;
+
+            // [新增] 鼠标悬停变色效果
+            const onPointerMove = (event) => {
+                if (currentMode !== 'village' || !annotationState.enabled) return;
+                
+                mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+                mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+                raycaster.setFromCamera(mouse, camera);
+                
+                const annoIntersects = raycaster.intersectObjects(annotationState.group.children);
+                
+                if (annoIntersects.length > 0) {
+                    const hit = annoIntersects[0].object;
+                    if (hit.userData.isAnnotation) {
+                        // 如果之前悬停过别的对象，先恢复
+                        if (hoveredAnnotation && hoveredAnnotation !== hit) {
+                            hoveredAnnotation.userData.hovered = false; 
+                        }
+                        
+                        if (hoveredAnnotation !== hit) {
+                            hoveredAnnotation = hit;
+                            hoveredAnnotation.userData.hovered = true; // 标记悬停
+                            document.body.style.cursor = 'pointer';
+                        }
+                        return; // 命中则退出
+                    }
+                }
+                
+                // 未命中任何东西
+                if (hoveredAnnotation) {
+                    hoveredAnnotation.userData.hovered = false; // 取消标记
+                    document.body.style.cursor = 'default';
+                    hoveredAnnotation = null;
+                }
+            };
+            window.addEventListener('pointermove', onPointerMove);
+
+            window.addEventListener('pointerdown', (event) => {
+                // 允许在所有模式下拾取，但在 village 模式下主要用于调试坐标
+                if (event.target.tagName !== 'CANVAS') return;
+                if (event.button !== 0) return;
+
+                mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+                mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+                raycaster.setFromCamera(mouse, camera);
+                
+                // 1. 优先检测标注点点击
+                if (annotationState.enabled && currentMode === 'village') {
+                    const annoIntersects = raycaster.intersectObjects(annotationState.group.children);
+                    if (annoIntersects.length > 0) {
+                        const annotation = annoIntersects[0].object;
+                        if (annotation.userData.isAnnotation) {
+                            showAnnotationImage(annotation.userData.data);
+                            return; 
+                        }
+                    }
+                }
+                // [删除] 移除了点击模型打印坐标的调试功能
+            });
+
+            // 初始化侧边栏点击
+            initArtifactSidebar();
+
+            // 初始化图片查看器交互
+            initImageViewerControls();
+
+            document.addEventListener('pointerlockchange', () => {
+                if (document.pointerLockElement !== renderer.domElement && droneMode) {
+                    // 退出锁定时自动切回 UI 状态
+                    document.getElementById('mode-orbit').checked = true;
+                    droneMode = false;
+                    controls.enabled = true;
+                }
+            });
+        }
+
+        function initArtifactSidebar() {
+            const list = document.getElementById('artifact-list');
+            list.innerHTML = '';
+            ARTIFACTS.forEach((art, idx) => {
+                const item = document.createElement('div');
+                item.className = 'artifact-item';
+                item.innerHTML = `<span>🔹</span> <span>${art.name}</span>`;
+                item.onclick = () => loadArtifactItem(idx);
+                list.appendChild(item);
+            });
+        }
+
+        // [核心修复] 彻底清理旧模型，防止重叠
+        const cleanupCurrentArtifact = () => {
+            if (!activeModel) return;
+            scene.remove(activeModel);
+            activeModel.traverse(child => {
+                if (child.geometry) child.geometry.dispose();
+                if (child.material) {
+                    if (Array.isArray(child.material)) {
+                        child.material.forEach(m => m.dispose());
+                    } else {
+                        child.material.dispose();
+                    }
+                }
+            });
+            activeModel = null;
+        };
+
+        function loadArtifactItem(index) {
+            // 生成唯一请求 ID，防止旧请求覆盖新请求
+            const requestId = ++pendingArtifactRequestId;
+            
+            const items = document.querySelectorAll('.artifact-item');
+            items.forEach((it, i) => it.classList.toggle('active', i === index));
+
+            const artData = ARTIFACTS[index];
+            // showToast(`正在加载: ${artData.name}`);
+            
+            // 立即清理当前模型，确保场景干净
+            cleanupCurrentArtifact();
+            generatorPlane = null; 
+
+            // 更新大标题
+            const mainTitle = document.getElementById('main-title');
+            if (mainTitle) {
+                mainTitle.innerText = artData.name;
+                triggerAnim(mainTitle); // 动画
+            }
+
+            // 更新展示区域：图片或描述
+            const visualArea = document.getElementById('desc-content');
+            const textArea = document.getElementById('description-content');
+            
+            if (visualArea) {
+                if (artData.img) {
+                    visualArea.innerHTML = `<img src="${artData.img}" style="width:100%; border-radius:8px; margin-bottom:15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); cursor:pointer;" onclick="showAnnotationImage({img:'${artData.img}'})">`;
+                    triggerAnim(visualArea); // 动画
+                } else {
+                    visualArea.innerHTML = '';
+                    visualArea.classList.remove('anim-fade-up');
+                }
+            }
+
+            if (textArea) {
+                if (artData.desc) {
+                    textArea.innerHTML = `<p>${artData.desc}</p>`;
+                    triggerAnim(textArea); // 动画
+                } else {
+                    textArea.innerHTML = '';
+                    textArea.classList.remove('anim-fade-up');
+                }
+            }
+
+            const genPanel = document.getElementById('generator-panel');
+            const loader = document.getElementById('loader');
+
+            // 特殊处理：生成器
+            if (artData.type === 'generator') {
+                if (loader) loader.style.display = 'none';
+                if(genPanel) genPanel.classList.add('visible');
+                // 自动生成一次默认的
+                generatePattern();
+                return;
+            } else {
+                if(genPanel) genPanel.classList.remove('visible');
+            }
+            
+            if (loader) loader.style.display = 'flex';
+
+            const gltfLoader = new GLTFLoader();
+            gltfLoader.load(
+                artData.model, 
+                (gltf) => {
+                    // [关键检查] 如果请求 ID 过期，说明用户已经切换到了别的文物，直接丢弃结果
+                    if (requestId !== pendingArtifactRequestId) {
+                        console.log(`[Artifact] Request ${requestId} expired, current is ${pendingArtifactRequestId}. Discarding model.`);
+                        // 清理刚刚加载但未使用的模型资源
+                        gltf.scene.traverse(child => {
+                            if (child.geometry) child.geometry.dispose();
+                            if (child.material) {
+                                if (Array.isArray(child.material)) child.material.forEach(m => m.dispose());
+                                else child.material.dispose();
+                            }
+                        });
+                        return;
+                    }
+
+                    // 再次确保当前没有残留模型 (理论上上面已经清理了，但为了保险)
+                    if (activeModel) cleanupCurrentArtifact();
+                    
+                    if (currentMode !== 'artifact') {
+                        // 如果加载完成了但用户已经切换了模式 (比如回到了地图)，也要丢弃
+                        cleanupCurrentArtifact(); // 使用通用清理函数
+                        return;
+                    }
+                    
+                    activeModel = gltf.scene;
+                    
+                    // 自动居中与缩放算法升级
+                    const box = new THREE.Box3().setFromObject(activeModel);
+                    const size = box.getSize(new THREE.Vector3());
+                    const center = box.getCenter(new THREE.Vector3());
+                    
+                    // 修正位置：
+                    // 1. 获取包围盒底部的 Y 坐标和中央的 Y
+                    // 2. 将模型的几何中心点(center)移动到世界原点(0,0,0)
+                    activeModel.position.x += -center.x;
+                    activeModel.position.y += -center.y;
+                    activeModel.position.z += -center.z;
+                    
+                    // 3. 计算缩放
+                    // [修改] 配合 FOV=35 和 dist=8，我们需要一个新的尺寸基准
+                    // 在 FOV=35, dist=8 时，可见垂直高度约为 5.0 (2 * tan(17.5) * 8 ~= 5.04)
+                    // 因此我们要让物体高度接近 4.0 ~ 4.5
+                    const maxDim = Math.max(size.x, size.y, size.z);
+                    let scale = 1.0;
+                    if (maxDim > 0) {
+                        const targetSize = 80; 
+                        scale = targetSize / maxDim; 
+                        activeModel.scale.setScalar(scale);
+                    }
+                    
+                    // 4. [修正] 视觉位置调整
+                    // 回退到 y -= 0.5 (向下偏移，留出顶部空间)
+                    activeModel.position.y -= 20; 
+                    
+                    // [保底] 移除额外的系数，直接依赖 targetSize
+                    // activeModel.scale.multiplyScalar(1.2);
+
+                    // ... (rest of the success callback)
+                    scene.add(activeModel);
+                    if (loader) loader.style.display = 'none';
+                },
+                undefined,
+                (err) => {
+                    // 只有是最新的请求才显示错误
+                    if (requestId === pendingArtifactRequestId) {
+                        console.warn(err);
+                        showToast("未找到模型文件: " + artData.model);
+                        if (loader) loader.style.display = 'none';
+                    }
+                }
+            );
+        }
+
+
+
+        // --- 场景切换核心逻辑 ---
+        function switchScene(type, btnElement) {
+            console.log("[App] switchScene called with:", type);
+            if (!MODELS[type]) {
+                showToast("错误：未找到场景定义 " + type);
+                return;
+            }
+            // showToast(`正在切换至: ${MODELS[type].title}`);
+
+            // [新增] 保存当前模式的相机状态
+            // 但如果当前模式已经有 tilesRenderer 正在加载并重置相机的过程(village首次)，则不要保存不准确的状态
+            // 简单逻辑：只要 camera 正常存在就保存
+            if (currentMode && MODELS[currentMode]) {
+                // 如果当前是在 'village' 且已被 tilesRenderer 重置过 (userData.initPositionSet)，再保存
+                // 防止还没加载完就切走，保存了一个错误的初始状态
+                if (currentMode === 'village') {
+                     if (tilesRenderer && tilesRenderer.userData && tilesRenderer.userData.initPositionSet) {
+                        MODELS[currentMode].savedState = {
+                            position: camera.position.clone(),
+                            target: controls.target.clone(),
+                            fov: camera.fov
+                        };
+                     }
+                } else {
+                    MODELS[currentMode].savedState = {
+                        position: camera.position.clone(),
+                        target: controls.target.clone(),
+                        fov: camera.fov
+                    };
+                }
+            }
+
+            // UI 状态处理
+            const sidebar = document.getElementById('artifact-sidebar');
+            const genPanel = document.getElementById('generator-panel');
+            const imageViewer = document.getElementById('image-viewer');
+            const controlsPanels = document.querySelectorAll('.control-panel'); 
+            const mapBtn = document.getElementById('map-trigger-btn');
+            
+            // [新增] 文物展示区域容器，需要在切出时清空
+            const descVisualContent = document.getElementById('desc-content');
+
+            if (type === 'artifact') {
+                if (sidebar) sidebar.classList.add('visible');
+                // [新增] 文物模式去除雾气，保证物体清晰
+                if (scene.fog) scene.fog.density = 0;
+                
+                camera.remove(keyLight); 
+                lightState.artifactLight = false;
+                
+                controlsPanels.forEach(p => p.style.display = 'none');
+                if (mapBtn) mapBtn.style.display = 'none';
+
+                if(imageViewer) imageViewer.classList.remove('visible');
+                if(annotationState.group) annotationState.group.visible = false;
+            } else {
+                if (sidebar) sidebar.classList.remove('visible');
+                if (genPanel) genPanel.classList.remove('visible');
+                // [新增] 恢复场景雾气
+                if (scene.fog) scene.fog.density = 0.005;
+
+                // [关键修复] 如果是从文物模式切回，清空残留的展示图
+                if (descVisualContent) descVisualContent.innerHTML = '';
+                
+                camera.remove(keyLight); 
+                lightState.artifactLight = false;
+                
+                controlsPanels.forEach(p => p.style.display = 'block');
+                if (mapBtn) mapBtn.style.display = 'flex';
+
+                const shouldShow = annotationState.enabled;
+                if(annotationState.group) annotationState.group.visible = shouldShow;
+            }
+
+            // 清理
+            const cleanup = (obj) => {
+                if (!obj) return;
+                scene.remove(obj);
+                obj.traverse(c => {
+                    if(c.geometry) c.geometry.dispose();
+                    if(c.material) {
+                        if(Array.isArray(c.material)) c.material.forEach(m=>m.dispose());
+                        else c.material.dispose();
+                    }
+                });
+            };
+
+            if (activeModel) { 
+                cleanup(activeModel);
+                activeModel = null; 
+            }
+            if (tilesRenderer) { 
+                tilesRenderer.dispose(); 
+                scene.remove(tilesRenderer.group);
+                tilesRenderer = null; 
+            }
+
+            // 更新 UI 按钮激活态
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            if (btnElement) {
+                btnElement.classList.add('active');
+            } else {
+                const btn = document.querySelector(`.nav-btn[data-type="${type}"]`);
+                if(btn) btn.classList.add('active');
+            }
+            
+            // 更新文本
+            try {
+                const data = MODELS[type];
+                
+                // [新增] 恢复相机状态 或 使用默认值
+                if (data.savedState) {
+                    // 如果有保存的状态，直接恢复
+                    camera.position.copy(data.savedState.position);
+                    controls.target.copy(data.savedState.target);
+                    camera.fov = data.savedState.fov;
+                } else {
+                    // 首次加载或无状态，使用默认配置
+                    camera.position.copy(data.camera);
+                    controls.target.set(0,0,0);
+                    camera.fov = data.fov || 50; 
+                }
+                camera.updateProjectionMatrix();
+                controls.update();
+
+                const mainTitle = document.getElementById('main-title');
+                if (mainTitle) {
+                    mainTitle.innerText = data.title;
+                    triggerAnim(mainTitle); // 动画
+                }
+                
+                const descContent = document.getElementById('description-content');
+                if (descContent) {
+                    descContent.innerHTML = `<p>${data.desc}</p>`;
+                    triggerAnim(descContent); // 动画
+                }
+
+                const loader = document.getElementById('loader');
+                if(loader) loader.style.display = 'flex';
+                
+                currentMode = type;
+
+                if (type === 'village') {
+                    loadVillageTiles();
+                } else {
+                    loadArtifactItem(0);
+                }
+            } catch(e) {
+                console.error(e);
+                showToast("切换场景时发生错误: " + e.message);
+            }
+        }
+
+        function loadVillageTiles() {
+            // 加载 3D Tiles
+            tilesRenderer = new TilesRenderer('./assets/models/tileset.json');
+            tilesRenderer.setCamera(camera);
+            tilesRenderer.setResolutionFromRenderer(camera, renderer);
+            
+            // 修正模型旋转 (Z-up 转 Y-up)
+            tilesRenderer.group.rotation.x = -Math.PI / 2;
+            
+            // 优化加载参数
+            tilesRenderer.lruCache.minSize = 1000;
+            tilesRenderer.lruCache.maxSize = 2500; 
+            tilesRenderer.errorTarget = 1; // 极低误差允许，强迫加载最高精细度，减少 LOD 切换带来的"突然加载"感
+            
+            // 解决 "区块突然加载/显示不一致" 问题
+            // tilesRenderer.optimizeRaycast = false; 
+
+            // 调试辅助：打印初始信息
+            console.log("Tileset loading...", tilesRenderer);
+
+            scene.add(tilesRenderer.group);
+            // tilesRenderer.group.rotation.x = -Math.PI / 2; // 注释掉此行可测试倾斜问题，但通常 Tiles数据是Z-up需要转
+            // 用户反馈模型倾斜，这是因为 3D Tiles 通常使用 ECEF 或 Z-up 坐标系，而 Three.js 是 Y-up。
+            // 目标经纬度: 108E, 18N
+            // 计算旋转矩阵以修正地球曲率导致的倾斜
+            const lat = 18;
+            const lon = 108;
+            const latRad = lat * (Math.PI / 180);
+            const lonRad = lon * (Math.PI / 180);
+
+            // ECEF 下该经纬度的 Surface Normal (Up Vector)
+            // x = cos(lat) * cos(lon)
+            // y = cos(lat) * sin(lon)
+            // z = sin(lat)
+            const upVector = new THREE.Vector3(
+                Math.cos(latRad) * Math.cos(lonRad),
+                Math.cos(latRad) * Math.sin(lonRad),
+                Math.sin(latRad)
+            ).normalize();
+
+            // Three.js 的 Up 是 (0, 1, 0)
+            const targetUp = new THREE.Vector3(0, 1, 0);
+            const q = new THREE.Quaternion().setFromUnitVectors(upVector, targetUp);
+            
+            // 应用旋转
+            tilesRenderer.group.quaternion.copy(q);
+            // tilesRenderer.group.rotateX(-Math.PI / 2); // 移除额外的X轴旋转，防止过度修正
+            
+            // 重要修复：3D Tiles 载入后自动归零坐标
+            // 确保 userData 存在，避免后续报错
+            if(!tilesRenderer.userData) tilesRenderer.userData = {};
+
+            tilesRenderer.onLoadTileSet = (tileset) => {
+                // 终极修复：如果已经初始化过位置和视角，直接完全退出，不执行任何操作
+                // 这将阻止多重 Toast 提示，并绝对保证视图/模型位置的稳定性
+                if (tilesRenderer.userData.hasCentered) return;
+
+                // showToast("全景数据结构已读取");
+
+                if (tileset.root && tileset.root.boundingVolume) {
+                     const sphere = tileset.root.boundingVolume.sphere;
+                     if (sphere) {
+                         // 锁定位置：仅首次计算并应用位置偏移
+                         if (!tilesRenderer.userData.initPositionSet) {
+                             const center = new THREE.Vector3(sphere[0], sphere[1], sphere[2]);
+                             const rotatedCenter = center.clone().applyQuaternion(tilesRenderer.group.quaternion);
+                             tilesRenderer.group.position.copy(rotatedCenter).negate();
+                             tilesRenderer.userData.initPositionSet = true;
+                         }
+
+                         // 锁定视角：仅首次重置相机
+                         const radius = sphere[3];
+                         camera.position.set(0, radius * 1.5, radius * 0.4); 
+                         controls.target.set(0, 0, 0);
+                         controls.update();
+                         
+                         // 标记已处理
+                         tilesRenderer.userData.hasCentered = true;
+                         
+                         // 进场动画
+                         new TWEEN.Tween(camera.position)
+                             .to({ y: radius * 0.8, z: radius * 0.6 }, 2000)
+                             .easing(t => t * (2 - t))
+                             .start();
+                     }
+                }
+            };
+            
+            // 保底逻辑
+            const autoFocus = () => {
+                // 彻底移除动态归零逻辑，防止无人机飞行时模型突然跳变
+                // 我们完全依赖 onLoadTileSet 中的首次初始化
+            };
+
+            setTimeout(() => { 
+                document.getElementById('loader').style.display = 'none'; 
+                // showToast("全景模型加载逻辑完毕");
+            }, 1000);
+        }
+
+        // 旧的 loadArtifactGLB 已废弃，被 loadArtifactItem 取代
+
+        function createPlaceholder() {
+            const geo = new THREE.TorusKnotGeometry(1.5, 0.4, 120, 20);
+            const mat = new THREE.MeshStandardMaterial({ color: 0xD4AF37 });
+            activeModel = new THREE.Mesh(geo, mat);
+            scene.add(activeModel);
+        }
+
+        // --- 简易动画引擎 (Polyfill for TWEEN) ---
+        const tweenList = [];
+        const TWEEN = {
+             Easing: {
+                 Quadratic: { Out: (t) => t * (2 - t) }, // 补全缺少的 Easing
+                 Back: { In: (t) => t*t*(2.70158*t - 1.70158) },
+                 Elastic: { Out: (t) => (t === 0 || t === 1) ? t : Math.pow(2, -10 * t) * Math.sin((t * 10 - 0.75) * (2 * Math.PI) / 0.3) + 1 }
+             },
+             update: function(time) {
+                 for(let i = tweenList.length - 1; i >= 0; i--) {
+                    if(tweenList[i].update(time)) tweenList.splice(i, 1);
+                 }
+             }
+        };
+        class SimpleTween {
+            constructor(target) { 
+                this.target = target; this.toVals = {}; this.duration = 1000; 
+                this.startTime = 0; this.easingFn = t=>t; this.onComp = null;
+                this._yoyo = false; this._repeat = 0; this._repeatCount = 0; this._reversed = false;
+            }
+            to(props, dur) { this.toVals = props; this.duration = dur; return this; }
+            easing(fn) { this.easingFn = fn; return this; }
+            onComplete(fn) { this.onComp = fn; return this; }
+            yoyo(b) { this._yoyo = b; return this; }
+            repeat(n) { this._repeat = n; return this; }
+            start() { 
+                this.startVals = {};
+                for(let k in this.toVals) this.startVals[k] = this.target[k];
+                this.startTime = performance.now();
+                tweenList.push(this);
+                return this;
+            }
+            update(time) {
+                let progress = (time - this.startTime) / this.duration;
+                if(progress > 1) progress = 1;
+                
+                const val = this.easingFn(this._reversed ? (1-progress) : progress);
+                for(let k in this.toVals) {
+                    this.target[k] = this.startVals[k] + (this.toVals[k] - this.startVals[k]) * val;
+                }
+                
+                if(progress === 1) {
+                    if(this._yoyo && !this._reversed) {
+                        this._reversed = true; this.startTime = time; return false;
+                    }
+                    if(this._yoyo && this._reversed) {
+                        this._reversed = false;
+                        if(this._repeatCount < this._repeat) {
+                            this._repeatCount++; this.startTime = time; return false;
+                        }
+                    }
+                    if(this.onComp) this.onComp();
+                    return true; // remove
+                }
+                return false;
+            }
+        }
+        TWEEN.Tween = SimpleTween;
+
+        // --- 主循环 ---
+        function animate() {
+            requestAnimationFrame(animate);
+            const delta = clock.getDelta();
+            const now = performance.now();
+            TWEEN.update(now);
+
+            // 无人机物理
+            if (droneMode && pointerControls.isLocked) {
+                // 限制最大步长，防止切换标签页回来后瞬间飞出
+                const physicsDelta = Math.min(delta, 0.05); // 进一步限制单帧时间
+
+                // 使用指数衰减模拟阻力
+                const damping = 5.0; // 增加阻力，停得更快
+                const frameDecay = Math.exp(-damping * physicsDelta);
+                
+                velocity.x *= frameDecay;
+                velocity.z *= frameDecay;
+                velocity.y *= frameDecay;
+                
+                direction.z = Number(moveState.forward) - Number(moveState.backward);
+                direction.x = Number(moveState.right) - Number(moveState.left);
+                direction.normalize(); 
+                
+                // 降低加速度，使得移动更平缓
+                const acceleration = 150.0; 
+                if (moveState.forward || moveState.backward) velocity.z -= direction.z * acceleration * physicsDelta;
+                if (moveState.left || moveState.right) velocity.x -= direction.x * acceleration * physicsDelta;
+                if (moveState.up) velocity.y += acceleration * physicsDelta;
+                if (moveState.down) velocity.y -= acceleration * physicsDelta;
+
+                // [新增] 速度限制 (Clamping)，防止速度无限累积导致的瞬移
+                const maxSpeed = 30.0;
+                velocity.x = Math.max(Math.min(velocity.x, maxSpeed), -maxSpeed);
+                velocity.z = Math.max(Math.min(velocity.z, maxSpeed), -maxSpeed);
+                velocity.y = Math.max(Math.min(velocity.y, maxSpeed), -maxSpeed);
+                
+                // 应用位移
+                pointerControls.moveRight(-velocity.x * physicsDelta);
+                pointerControls.moveForward(-velocity.z * physicsDelta);
+                pointerControls.getObject().position.y += velocity.y * physicsDelta;
+                
+                // 地面碰撞检测
+                if (pointerControls.getObject().position.y < 1.5) {
+                    velocity.y = 0;
+                    pointerControls.getObject().position.y = 1.5;
+                }
+            } else {
+                controls.update();
+                if (currentMode === 'artifact' && activeModel && !activeModel.userData.isGenerator) {
+                   activeModel.rotation.y += 0.002;
+                }
+            }
+
+            // [新增] 标注悬浮动画 (平滑过渡)
+            const time = clock.getElapsedTime();
+            annotationState.group.children.forEach(child => {
+                if (child.userData.isAnnotation && child.userData.originalY !== undefined) {
+                    let targetY = child.userData.originalY;
+                    if (child.userData.hovered) {
+                        // 悬停时上下浮动 (统一方向：总是先向上浮动，使用 abs 确保正向偏移或限制范围)
+                        // 使用 Math.abs 让浮动主要表现为"向上跳动"的感觉，或者仅仅是相位一致
+                        // 用户要求"统一方向"，可能是指不要有时向上有时向下，而是就在原位置上方浮动
+                        targetY += Math.abs(Math.sin(time * 4)) * 0.5; 
+                    }
+                    //使得位置变化更加平滑
+                    child.position.y += (targetY - child.position.y) * 0.1; 
+                }
+            });
+
+            // 更新 Tiles
+            // [关键修正]
+            // 为了解决"点云模式加载时出现中央倾斜Blob"的问题 (Issue #3)
+            // 原因：animate 循环中的 traverse 过于激进，可能触及到 TilesRenderer 正在初始化的缓存对象。
+            // 修复：只遍历 TilesRenderer 明确标记为可见的 Tiles。
+            
+            if (currentMode === 'village' && tilesRenderer) {
+                camera.updateMatrixWorld();
+                tilesRenderer.update();
+                // 更新标注点投影位置
+                updateAnnotations();
+            }
+            
+            // 1. 主场景渲染
+            renderer.setViewport(0, 0, window.innerWidth, window.innerHeight);
+            renderer.setScissor(0, 0, window.innerWidth, window.innerHeight);
+            renderer.setScissorTest(true);
+            composer.render();
+            
+            // 2. 坐标轴渲染 (右上角)
+            renderer.autoClear = false;
+            renderer.clearDepth();
+            
+            const axesSize = 120;
+            const axesPad = 20;
+            renderer.setViewport(window.innerWidth - axesSize - axesPad, window.innerHeight - axesSize - axesPad, axesSize, axesSize);
+            renderer.setScissor(window.innerWidth - axesSize - axesPad, window.innerHeight - axesSize - axesPad, axesSize, axesSize);
+            renderer.setScissorTest(true);
+            
+            // [修复] 坐标轴同步逻辑区分模式
+            // [移除] 坐标轴渲染相关代码
+        }
+
+        // 窗口 Resize
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            composer.setSize(window.innerWidth, window.innerHeight);
+            if (tilesRenderer && tilesRenderer.setResolutionFromRenderer) {
+                tilesRenderer.setResolutionFromRenderer(camera, renderer);
+            }
+        });
+
+        // --- 黎锦生成器逻辑 ---
+
+        // --- 标注系统逻辑 ---
+
+        /* --- 标注系统逻辑 --- */
+        /* annotationState 已移至顶部定义 (修复 ReferenceError) */
+
+
+        function initAnnotations() {
+            // 清理旧的
+            if(annotationState.group) annotationState.group.clear();
+            scene.add(annotationState.group);
+
+            // 1. 生成白点材质 (半透明白点)
+            const createDotMaterial = () => {
+                const canvas = document.createElement('canvas');
+                canvas.width = 64; canvas.height = 64;
+                const ctx = canvas.getContext('2d');
+                
+                // 柔和光晕点
+                const grad = ctx.createRadialGradient(32,32,4, 32,32,30);
+                grad.addColorStop(0, 'rgba(255, 255, 255, 1)');
+                grad.addColorStop(0.4, 'rgba(255, 255, 255, 0.8)');
+                grad.addColorStop(1, 'rgba(255, 255, 255, 0)');
+                
+                ctx.fillStyle = grad;
+                ctx.fillRect(0,0,64,64);
+                
+                const texture = new THREE.CanvasTexture(canvas);
+                return new THREE.SpriteMaterial({ map: texture, depthTest: false, sizeAttenuation: true, transparent: true });
+            };
+            const dotMat = createDotMaterial();
+
+            // 2. 生成文字标签贴图 (悬浮样式常驻，解决拉伸问题)
+            const createLabelSprite = (text) => {
+                // 增加 canvas 分辨率以提高清晰度
+                const h = 120; 
+                // 动态计算宽度，确保不拉伸
+                const ctxPre = document.createElement('canvas').getContext('2d');
+                ctxPre.font = 'bold 50px "Noto Serif SC", serif';
+                const metrics = ctxPre.measureText(text);
+                
+                const padX = 40; 
+                const bgW = metrics.width + padX * 2;
+                const canvasW = Math.ceil(bgW);
+                
+                const canvas = document.createElement('canvas');
+                canvas.width = canvasW; 
+                canvas.height = h;
+                const ctx = canvas.getContext('2d');
+                
+                // 绘制背景 (模拟 Tooltip 样式: 半透明白底毛玻璃)
+                const r = 12;
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.75)'; 
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.9)';
+                ctx.lineWidth = 2;
+
+                // 居中绘制
+                ctx.beginPath();
+                ctx.roundRect(2, 2, canvasW - 4, h - 4, r);
+                ctx.fill();
+                ctx.stroke();
+
+                // 绘制文字
+                ctx.font = 'bold 50px "Noto Serif SC", serif'; // 保持一致
+                ctx.fillStyle = '#173B52'; // 靛蓝字
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(text, canvasW/2, h/2 + 4); 
+
+                const texture = new THREE.CanvasTexture(canvas);
+                texture.minFilter = THREE.LinearFilter;
+                
+                // [关键修复]：根据 Canvas 的实际长宽比设置 Sprite 的 scale
+                // 设定世界坐标系下的高度 (比如 2.5米)
+                const worldH = 2.5; 
+                const aspect = canvasW / h;
+                const worldW = worldH * aspect; 
+
+                const mat = new THREE.SpriteMaterial({ map: texture, depthTest: false, transparent: true });
+                return { mat, w: worldW, h: worldH };
+            };
+
+            annotationState.points.forEach((pt) => {
+                // 解析地名
+                let name = "未知地点";
+                if (pt.img) {
+                    const parts = pt.img.split('/');
+                    const filename = parts[parts.length - 1]; 
+                    if (filename) {
+                         name = filename.split('.')[0];
+                    }
+                }
+
+                // A. 添加中心白点
+                const dot = new THREE.Sprite(dotMat);
+                dot.position.copy(pt.pos);
+                dot.scale.set(1.5, 1.5, 1);
+                dot.userData = { isAnnotation: true, data: pt };
+                annotationState.group.add(dot);
+
+                // B. 添加上方文字标签
+                const labelData = createLabelSprite(name);
+                const label = new THREE.Sprite(labelData.mat);
+                // 标签放在点上方
+                const labelPos = pt.pos.clone().add(new THREE.Vector3(0, 3.0, 0));
+                label.position.copy(labelPos);
+                label.scale.set(labelData.w, labelData.h, 1);
+                // [关键] 存储基础高度，用于悬浮动画
+                label.userData = { isAnnotation: true, data: pt, originalY: labelPos.y, hovered: false }; 
+                annotationState.group.add(label);
+            });
+            
+            // 绑定开关
+            document.querySelectorAll('input[name="annoToggle"]').forEach(input => {
+                input.addEventListener('change', (e) => {
+                    const enabled = (e.target.value === 'on');
+                    annotationState.enabled = enabled;
+                    annotationState.group.visible = enabled && (currentMode === 'village');
+                });
+            });
+        }
+
+        function updateAnnotations() {
+            // 现在使用 Three.js Sprite，GPU 会处理位置同步，不再需要手动计算 DOM 位置
+            // 只需要根据场景切换显示隐藏即可
+            if (currentMode !== 'village' || !annotationState.enabled) {
+                annotationState.group.visible = false;
+            } else {
+                annotationState.group.visible = true;
+            }
+        }
+
+        // --- 图片查看器控制逻辑 (缩放与平移) ---
+        let ivState = { scale: 1, x: 0, y: 0, isDragging: false, startX: 0, startY: 0 };
+        function initImageViewerControls() {
+            const viewer = document.getElementById('image-viewer');
+            const container = viewer.querySelector('.img-container');
+            const img = document.getElementById('iv-img');
+
+            if (!container || !img) return;
+
+            // 禁用图片原生拖拽
+            img.ondragstart = () => false;
+
+            container.addEventListener('wheel', (e) => {
+                e.preventDefault();
+                const delta = e.deltaY > 0 ? 0.9 : 1.1;
+                const newScale = Math.min(Math.max(ivState.scale * delta, 1), 10); 
+                
+                ivState.scale = newScale;
+                updateIvTransform();
+            }, { passive: false });
+
+            // 拖动逻辑：仅在按住时拖动，使用 Pointer Events 增强稳定性
+            container.addEventListener('pointerdown', (e) => {
+                e.preventDefault();
+                ivState.isDragging = true;
+                ivState.startX = e.clientX - ivState.x;
+                ivState.startY = e.clientY - ivState.y;
+                container.style.cursor = 'grabbing';
+                container.setPointerCapture(e.pointerId); // 捕获指针
+            });
+
+            container.addEventListener('pointermove', (e) => {
+                if (!ivState.isDragging) return;
+                
+                // 仅在放大的时候允许位移
+                if (ivState.scale > 1) {
+                    ivState.x = e.clientX - ivState.startX;
+                    ivState.y = e.clientY - ivState.startY;
+
+                    const rect = container.getBoundingClientRect();
+                    const limitX = (rect.width * ivState.scale - rect.width) / 2;
+                    const limitY = (rect.height * ivState.scale - rect.height) / 2;
+                    
+                    const clampX = Math.max(0, limitX);
+                    const clampY = Math.max(0, limitY);
+                    
+                    ivState.x = Math.max(Math.min(ivState.x, clampX), -clampX);
+                    ivState.y = Math.max(Math.min(ivState.y, clampY), -clampY);
+                } else {
+                    ivState.x = 0;
+                    ivState.y = 0;
+                }
+                
+                updateIvTransform();
+            });
+
+            container.addEventListener('pointerup', (e) => {
+                if (!ivState.isDragging) return;
+                terminateDragging(e.pointerId);
+            });
+
+            container.addEventListener('pointercancel', (e) => {
+                terminateDragging(e.pointerId);
+            });
+
+            function terminateDragging(pointerId) {
+                ivState.isDragging = false;
+                container.style.cursor = 'grab';
+                container.releasePointerCapture(pointerId);
+                
+                // 回弹逻辑
+                if (ivState.scale <= 1.01) {
+                    ivState.x = 0; ivState.y = 0;
+                    updateIvTransform();
+                }
+            }
+
+            function updateIvTransform() {
+                img.style.transform = `translate(${ivState.x}px, ${ivState.y}px) scale(${ivState.scale})`;
+            }
+            
+            // 暴露重置方法
+            window.resetIvTransform = () => {
+                ivState = { scale: 1, x: 0, y: 0, isDragging: false, startX: 0, startY: 0 };
+                updateIvTransform();
+            };
+        }
+
+        function showAnnotationImage(data) {
+            const viewer = document.getElementById('image-viewer');
+            const imgEl = document.getElementById('iv-img');
+            
+            // 每次打开重置缩放
+            if (window.resetIvTransform) window.resetIvTransform();
+            
+            // 图像路径纠错：添加时间戳防止缓存
+            imgEl.src = data.img + "?t=" + new Date().getTime();
+            
+            imgEl.onload = () => {
+                viewer.classList.add('visible');
+            };
+
+            imgEl.onerror = () => { 
+                console.error("Image load failed:", data.img);
+                showToast("图片资源加载失败: " + data.img);
+            };
+        }
+        window.showAnnotationImage = showAnnotationImage;
+
+        // 全局函数供 HTML onclick 调用
+        window.toggleMap = function(show) {
+            const modal = document.getElementById('map-modal');
+            if(show) modal.classList.add('active');
+            else modal.classList.remove('active');
+        };
+
+        function initGenerator() {
+            document.getElementById('gen-btn').addEventListener('click', generatePattern);
+            document.getElementById('rand-btn').addEventListener('click', () => {
+                const randomHex = () => '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0');
+                document.getElementById('gen-color1').value = randomHex();
+                document.getElementById('gen-color2').value = randomHex();
+                generatePattern();
+            });
+        }
+
+        function generatePattern() {
+            // 参数读取
+            const shape = document.getElementById('gen-shape').value;
+            const layoutMode = document.getElementById('gen-layout') ? document.getElementById('gen-layout').value : 'horizontal';
+
+            // 获取用户选择的主色，但不一定完全依赖，为了丰富性我们会生成调色板
+            const userC1 = document.getElementById('gen-color1').value; // 主色
+            const userC2 = document.getElementById('gen-color2').value; // 底色
+            
+            // 扩展调色板：基于黎锦常见的 红、黄、黑、蓝、白
+            // 我们基于 userC1 生成一个相近色系，再混合传统色
+            const colorPalette = [
+                userC1,
+                userC2,
+                '#D4AF37', // 金/黄
+                '#1A1A1A', // 黑 (黎锦常用底或线)
+                '#F0F0F0', // 白 (提亮)
+                '#173B52'  // 藏蓝
+            ];
+            const randColor = () => colorPalette[Math.floor(Math.random() * colorPalette.length)];
+
+            const size = 1024;
+            const canvas = document.createElement('canvas');
+            canvas.width = size;
+            canvas.height = size;
+            const ctx = canvas.getContext('2d');
+            
+            // 1. 底色填充
+            ctx.fillStyle = userC2;
+            ctx.fillRect(0,0,size,size);
+            
+            // 2. 模拟织物纹理 (Noise + Grid)
+            ctx.globalAlpha = 0.1;
+            ctx.fillStyle = '#000';
+            // 经纬线
+            for(let i=0; i<size; i+=3) {
+                if(Math.random()>0.5) ctx.fillRect(0, i, size, 1);
+                else ctx.fillRect(i, 0, 1, size);
+            }
+            ctx.globalAlpha = 1.0;
+
+            // 几何绘图工具函数
+            // 定义黎锦四大纹样绘制函数
+            // 1. 人纹 (Human/Ancestor) - 抽象人形，双手举起，双腿蹲踞
+            const drawHuman = (ctx, x, y, size, color) => {
+                ctx.save();
+                ctx.translate(x, y);
+                ctx.strokeStyle = color;
+                ctx.lineWidth = size * 0.08;
+                ctx.lineCap = 'round';
+                ctx.lineJoin = 'round';
+                
+                const s = size * 0.4;
+                
+                // 头部 (菱形)
+                ctx.beginPath();
+                ctx.moveTo(0, -s);
+                ctx.lineTo(s*0.3, -s*0.7);
+                ctx.lineTo(0, -s*0.4);
+                ctx.lineTo(-s*0.3, -s*0.7);
+                ctx.closePath();
+                ctx.stroke();
+                
+                // 身体 (简单直线 + 内部点缀)
+                ctx.beginPath();
+                ctx.moveTo(0, -s*0.4);
+                ctx.lineTo(0, s*0.4);
+                ctx.stroke();
+                
+                // 手臂 (W形 / 举手)
+                ctx.beginPath();
+                ctx.moveTo(-s*0.8, -s*0.2); // 左手
+                ctx.lineTo(-s*0.4, -s*0.4); // 左肘
+                ctx.lineTo(0, -s*0.2);      // 肩
+                ctx.lineTo(s*0.4, -s*0.4);  // 右肘
+                ctx.lineTo(s*0.8, -s*0.2);  // 右手
+                ctx.stroke();
+                
+                // 手指装饰 (简单的梳齿状)
+                const handS = s*0.2;
+                ctx.lineWidth = size * 0.05;
+                // 左手
+                ctx.beginPath(); ctx.moveTo(-s*0.8, -s*0.2); ctx.lineTo(-s*0.8, -s*0.2-handS); ctx.stroke();
+                // 右手
+                ctx.beginPath(); ctx.moveTo(s*0.8, -s*0.2); ctx.lineTo(s*0.8, -s*0.2-handS); ctx.stroke();
+
+                // 腿部 (M形 / 蹲踞)
+                ctx.lineWidth = size * 0.08;
+                ctx.beginPath();
+                ctx.moveTo(-s*0.8, s*0.8);  // 左脚
+                ctx.lineTo(-s*0.4, s*0.4);  // 左膝
+                ctx.lineTo(0, s*0.4);       // 胯
+                ctx.lineTo(s*0.4, s*0.4);   // 右膝
+                ctx.lineTo(s*0.8, s*0.8);   // 右脚
+                ctx.stroke();
+                
+                ctx.restore();
+            };
+
+            // 2. 蛙纹 (Frog/Fertility) - 几何化的青蛙，象征多子多福
+            const drawFrog = (ctx, x, y, size, color) => {
+                ctx.save();
+                ctx.translate(x, y);
+                ctx.strokeStyle = color;
+                ctx.fillStyle = color;
+                ctx.lineWidth = size * 0.06;
+                
+                const s = size * 0.45;
+                
+                // 身体 (菱形)
+                ctx.beginPath();
+                ctx.moveTo(0, -s*0.3);
+                ctx.lineTo(s*0.3, 0);
+                ctx.lineTo(0, s*0.3);
+                ctx.lineTo(-s*0.3, 0);
+                ctx.closePath();
+                ctx.stroke();
+                // 身体中心点
+                ctx.beginPath(); ctx.arc(0,0, s*0.1, 0, Math.PI*2); ctx.fill();
+
+                // 四肢 (X形向外延伸，末端有折角)
+                // 左上
+                ctx.beginPath(); 
+                ctx.moveTo(-s*0.3, -s*0.1); 
+                ctx.lineTo(-s*0.7, -s*0.5); 
+                ctx.lineTo(-s*0.9, -s*0.3); // 爪子折角
+                ctx.stroke();
+                // 右上
+                ctx.beginPath(); 
+                ctx.moveTo(s*0.3, -s*0.1); 
+                ctx.lineTo(s*0.7, -s*0.5); 
+                ctx.lineTo(s*0.9, -s*0.3); 
+                ctx.stroke();
+                // 左下
+                ctx.beginPath(); 
+                ctx.moveTo(-s*0.3, s*0.1); 
+                ctx.lineTo(-s*0.7, s*0.5); 
+                ctx.lineTo(-s*0.9, s*0.3); 
+                ctx.stroke();
+                // 右下
+                ctx.beginPath(); 
+                ctx.moveTo(s*0.3, s*0.1); 
+                ctx.lineTo(s*0.7, s*0.5); 
+                ctx.lineTo(s*0.9, s*0.3); 
+                ctx.stroke();
+                
+                // 头部 (上方三角形)
+                ctx.beginPath();
+                ctx.moveTo(-s*0.15, -s*0.35);
+                ctx.lineTo(s*0.15, -s*0.35);
+                ctx.lineTo(0, -s*0.6);
+                ctx.fill();
+
+                ctx.restore();
+            };
+
+            // 3. 花章纹 (Flower/Emblem) - 几何化的花朵/八角星，类似 X 形状
+            const drawFlower = (ctx, x, y, size, color) => {
+                ctx.save();
+                ctx.translate(x, y);
+                ctx.strokeStyle = color;
+                ctx.lineWidth = size * 0.06;
+                
+                const s = size * 0.4;
+                
+                // 中心 X 骨架
+                ctx.beginPath();
+                ctx.moveTo(-s, -s); ctx.lineTo(s, s);
+                ctx.moveTo(s, -s); ctx.lineTo(-s, s);
+                ctx.stroke();
+                
+                // 末端装饰 (V形)
+                const d = s * 0.3;
+                const ends = [
+                    [-s, -s, 1, 1], [s, -s, -1, 1],
+                    [-s, s, 1, -1], [s, s, -1, -1]
+                ];
+                
+                ends.forEach(pos => {
+                    const [px, py, dx, dy] = pos;
+                    ctx.beginPath();
+                    ctx.moveTo(px + dx*d, py);
+                    ctx.lineTo(px, py);
+                    ctx.lineTo(px, py + dy*d);
+                    ctx.stroke();
+                });
+                
+                // 中心菱形
+                ctx.fillStyle = color;
+                ctx.beginPath();
+                ctx.moveTo(0, -s*0.4); ctx.lineTo(s*0.4, 0); ctx.lineTo(0, s*0.4); ctx.lineTo(-s*0.4, 0);
+                ctx.fill();
+                
+                // 内部镂空点
+                ctx.fillStyle = '#fff'; // 假设花心是亮的
+                ctx.beginPath(); ctx.arc(0,0, s*0.15, 0, Math.PI*2); ctx.fill();
+
+                ctx.restore();
+            };
+
+            // 4. 几何纹 (Geometry) - 多重嵌套菱形/雷纹
+            const drawGeometric = (ctx, x, y, size, color) => {
+                ctx.save();
+                ctx.translate(x, y);
+                ctx.strokeStyle = color;
+                ctx.lineWidth = size * 0.05;
+                
+                const s = size * 0.45;
+                
+                // 外层菱形
+                ctx.beginPath();
+                ctx.moveTo(0, -s); ctx.lineTo(s, 0); ctx.lineTo(0, s); ctx.lineTo(-s, 0);
+                ctx.closePath();
+                ctx.stroke();
+                
+                // 中层 (四角矩形装饰)
+                const q = s * 0.5;
+                // 上
+                ctx.strokeRect(-q*0.3, -q - q*0.3, q*0.6, q*0.6);
+                // 下
+                ctx.strokeRect(-q*0.3, q - q*0.3, q*0.6, q*0.6);
+                // 左
+                ctx.strokeRect(-q - q*0.3, -q*0.3, q*0.6, q*0.6);
+                // 右
+                ctx.strokeRect(q - q*0.3, -q*0.3, q*0.6, q*0.6);
+
+                // 内层嵌套菱形
+                ctx.beginPath();
+                ctx.moveTo(0, -s*0.6); ctx.lineTo(s*0.6, 0); ctx.lineTo(0, s*0.6); ctx.lineTo(-s*0.6, 0);
+                ctx.closePath();
+                ctx.stroke();
+
+                // 核心实心菱形
+                ctx.fillStyle = color;
+                ctx.beginPath();
+                ctx.moveTo(0, -s*0.3); ctx.lineTo(s*0.3, 0); ctx.lineTo(0, s*0.3); ctx.lineTo(-s*0.3, 0);
+                ctx.fill();
+
+                ctx.restore();
+            };
+
+            const drawZigZag = (y, h, color, lineWidth=2, xStart=0, xEnd=size) => {
+                ctx.beginPath();
+                ctx.strokeStyle = color;
+                ctx.lineWidth = lineWidth;
+                const waveW = h * 0.8;
+                // 确保波纹连续性，从 waveW 整数倍开始
+                const start = Math.floor(xStart / waveW) * waveW;
+                for(let x=start; x<=xEnd; x+=waveW) {
+                    ctx.lineTo(x + waveW/2, y);
+                    ctx.lineTo(x + waveW, y+h);
+                }
+                ctx.stroke();
+            };
+            
+            const drawGreatWall = (y, h, color, xStart=0, xEnd=size) => {
+                // 长城纹/回字纹
+                ctx.lineWidth = h * 0.15;
+                ctx.strokeStyle = color;
+                ctx.lineCap = 'square';
+                const step = h * 1.5;
+                ctx.beginPath();
+                let up = true;
+                const start = Math.floor(xStart / step) * step;
+                
+                for(let x=start; x<=xEnd; x+=step) {
+                    if(up) {
+                        ctx.moveTo(x, y+h); ctx.lineTo(x, y); ctx.lineTo(x+step/2, y); ctx.lineTo(x+step/2, y+h);
+                    } else {
+                        // 简化版方波
+                        ctx.moveTo(x, y); ctx.lineTo(x, y+h); ctx.lineTo(x+step/2, y+h); ctx.lineTo(x+step/2, y);
+                    }
+                }
+                ctx.stroke();
+            };
+
+            const drawMotifRow = (y, h, type, color, xStart=0, xEnd=size) => {
+                const step = h * 1.5; // 间距稍微拉大一点
+                // 计算起始点，保证对齐
+                let start = (Math.ceil(xStart/step)*step) + step/2;
+                if(start < xStart) start += step;
+                
+                for(let x=start; x<xEnd; x+=step) {
+                    // 调用对应的绘制函数
+                    if (type === 'human') {
+                        drawHuman(ctx, x, y + h/2, h, color);
+                    } else if (type === 'frog') {
+                        drawFrog(ctx, x, y + h/2, h, color);
+                    } else if (type === 'flower') {
+                        drawFlower(ctx, x, y + h/2, h, color);
+                    } else if (type === 'geometry') {
+                        drawGeometric(ctx, x, y + h/2, h, color);
+                    } else {
+                        // 默认菱形
+                        drawGeometric(ctx, x, y + h/2, h, color);
+                    }
+                }
+            };
+
+            // 3. 复杂图案逻辑：根据布局绘制 (Bands Generation vs Cross Generation)
+            
+            if (layoutMode === 'horizontal') {
+                // 原有逻辑：水平条带
+                let currentY = 0;
+                while(currentY < size) {
+                    // 随机选择条带高度
+                    const isMain = Math.random() < 0.2; // 20% 主图
+                    let h = isMain ? Math.random() * 80 + 60 : Math.random() * 20 + 10;
+                    if (currentY + h > size) h = size - currentY;
+                    
+                    // 绘制条带背景
+                    const bandColor = Math.random() > 0.6 ? userC2 : randColor();
+                    ctx.fillStyle = bandColor;
+                    ctx.fillRect(0, currentY, size, h);
+                    
+                    // 绘制条带内容
+                    if(isMain) {
+                        // 主纹样：菱形、人形、几何
+                        drawMotifRow(currentY, h, shape, randColor());
+                        // 边框修饰
+                        ctx.strokeStyle = randColor(); ctx.lineWidth = 2;
+                        ctx.strokeRect(0, currentY+2, size, h-4);
+                    } else {
+                        // 辅纹样：线条、锯齿、长城纹
+                        const type = Math.floor(Math.random() * 4);
+                        const decorColor = randColor();
+                        if(type === 0) {
+                            // 纯直线
+                            ctx.fillStyle = decorColor;
+                            ctx.fillRect(0, currentY + h/4, size, h/2);
+                        } else if (type === 1) {
+                            // 锯齿
+                            drawZigZag(currentY + h * 0.2, h*0.6, decorColor);
+                        } else if (type === 2) {
+                            // 长城纹
+                            drawGreatWall(currentY + h * 0.2, h*0.6, decorColor);
+                        } else {
+                            // 虚线点
+                            ctx.fillStyle = decorColor;
+                            for(let i=0; i<size; i+=h*2) ctx.fillRect(i, currentY+h/3, h, h/3);
+                        }
+                    }
+                    
+                    currentY += h;
+                }
+            } 
+            else if (layoutMode === 'cross') {
+                // 交叉菱格布局
+                // 1. 绘制大菱形网格背景
+                const gridSize = 140; // 增大网格
+                ctx.strokeStyle = userC1;
+                ctx.lineWidth = 6;
+                // 背景填充
+                ctx.globalAlpha = 0.5;
+                ctx.fillStyle = userC1;
+                ctx.fillRect(0,0,size,size);
+                ctx.globalAlpha = 1.0;
+                
+                // 菱格底纹只需要绘制线条
+                ctx.beginPath();
+                // \ lines
+                for (let i = -size; i < size * 2; i += gridSize) {
+                     ctx.moveTo(i, 0); ctx.lineTo(i + size, size); 
+                }
+                // / lines
+                for (let i = -size; i < size * 2; i += gridSize) {
+                     ctx.moveTo(i, 0); ctx.lineTo(i - size, size); 
+                }
+                ctx.stroke();
+
+                // 2. 在交点处绘制纹样 - 独立单元格绘制，不使用横向函数
+                for (let y = 0; y < size + gridSize; y += gridSize/2) {
+                    // 交错行
+                    const toggle = Math.floor(y / (gridSize/2)) % 2 === 0;
+                    
+                    for (let x = (toggle?0:gridSize/2) - gridSize; x < size + gridSize; x += gridSize) {
+                        
+                         ctx.save();
+                         ctx.translate(x, y);
+                         // 旋转成菱形
+                         ctx.rotate(Math.PI / 4);
+                         
+                         const blockSize = gridSize * 0.45;
+
+                        // 边框强调
+                         ctx.strokeStyle = userC2;
+                         ctx.lineWidth = 4;
+                         ctx.strokeRect(-blockSize, -blockSize, blockSize*2, blockSize*2);
+                         
+                         // 随机填充色块
+                         if(Math.random() > 0.3) {
+                             ctx.fillStyle = randColor();
+                             ctx.fillRect(-blockSize, -blockSize, blockSize*2, blockSize*2);
+                         }
+
+                         // 内部绘制图案
+                         if(Math.random() > 0.4) {
+                             ctx.rotate(-Math.PI / 4); // 转回正向绘制图案
+                             
+                             const subScale = 0.6;
+                             // 适配新的绘制函数，它们不需要 context scale (或者需要我们手动调整)
+                             // 但为了方便复用，我们这里传递一个较大的 size，然后通过 scale 缩小
+                             // 或者直接用我们的绘制函数，因为它们接受 size 参数
+                             
+                             // 恢复缩放，因为 drawXXX 函数内部使用 size
+                             // ctx.scale(subScale, subScale); 
+                             
+                             const patternSize = gridSize * 0.45; // 稍微小一点适应格子
+                             
+                             if(shape === 'human') {
+                                drawHuman(ctx, 0, 0, patternSize, '#fff');
+                             } else if (shape === 'frog') {
+                                drawFrog(ctx, 0, 0, patternSize, '#aaffaa');
+                             } else if (shape === 'flower') {
+                                drawFlower(ctx, 0, 0, patternSize, '#ffaaaa');
+                             } else {
+                                drawGeometric(ctx, 0, 0, patternSize, randColor());
+                             }
+                         }
+                         ctx.restore();
+                    }
+                }
+            }
+            else if (layoutMode === 'scatter') {
+                // 散点布局
+                 ctx.fillStyle = userC1;
+                 ctx.fillRect(0,0,size,size);
+                 
+                 for(let i=0; i<150; i++) {
+                     const cx = Math.random() * size;
+                     const cy = Math.random() * size;
+                     const scale = Math.random() * 0.5 + 0.5;
+                     
+                     ctx.save();
+                     ctx.translate(cx, cy);
+                     ctx.scale(scale, scale);
+                     ctx.rotate(Math.random() * Math.PI);
+                     
+                     drawMotifRow(0, 60, shape, randColor(), -50, 50); // Reuse logic
+                     
+                     ctx.restore();
+                 }
+            }
+            else { // diagonal
+                // 斜向纹样
+                 ctx.fillStyle = userC1;
+                 for(let i=-size; i<size*2; i+=40) {
+                     const color = randColor();
+                     ctx.fillStyle = color;
+                     ctx.beginPath();
+                     ctx.moveTo(i, 0); ctx.lineTo(i+20, 0); ctx.lineTo(i-size+20, size); ctx.lineTo(i-size, size);
+                     ctx.fill();
+                     
+                     // occasionally draw motif
+                     if(i%120===0) {
+                         ctx.save();
+                         ctx.translate(i%size, (i+200)%size);
+                         ctx.fillStyle='#fff';
+                         ctx.fillRect(0,0,20,20);
+                         ctx.restore();
+                     }
+                 }
+            }
+            
+            // 4. 更新纹理
+            if (generatorTexture) generatorTexture.dispose();
+            generatorTexture = new THREE.CanvasTexture(canvas);
+            generatorTexture.colorSpace = THREE.SRGBColorSpace;
+            generatorTexture.anisotropy = 8;
+            
+            if (generatorPlane) {
+                // 更新现有材质属性
+                if (Array.isArray(generatorPlane.material)) { // 多材质支持
+                    generatorPlane.material.forEach(m => {
+                        m.map = generatorTexture;
+                        m.bumpMap = generatorTexture;
+                        m.side = THREE.DoubleSide; // 确保双面
+                        m.needsUpdate = true;
+                    });
+                } else {
+                    generatorPlane.material.map = generatorTexture;
+                    generatorPlane.material.bumpMap = generatorTexture;
+                    generatorPlane.material.side = THREE.DoubleSide; // 确保双面
+                    generatorPlane.material.needsUpdate = true;
+                }
+                
+                // 动画反馈
+                new TWEEN.Tween(generatorPlane.scale)
+                    .to({ x: 1.1, y: 1.1 }, 100).yoyo(true).repeat(1).start();
+                    
+            } else {
+                // 创建展示面片
+                // [修改] 增大尺寸以匹配 FOV 35 的文化模式
+                const geo = new THREE.PlaneGeometry(50, 50); // 50x50
+                const mat = new THREE.MeshStandardMaterial({ 
+                    map: generatorTexture,
+                    side: THREE.DoubleSide, 
+                    roughness: 0.65,
+                    metalness: 0.1,
+                    bumpMap: generatorTexture,
+                    bumpScale: 0.05
+                });
+                generatorPlane = new THREE.Mesh(geo, mat);
+                generatorPlane.position.set(0, 0, 0); 
+                
+                // 边框装饰 (Frame) - 适配 50x50
+                // 边框比画作大一点点 (51x51)，厚度增加看起来更有质感
+                const frameGeo = new THREE.BoxGeometry(51, 51, 1.0);
+                const frameMat = new THREE.MeshStandardMaterial({ color: 0x5C4033, roughness: 0.9, name: 'Frame' });
+                const frame = new THREE.Mesh(frameGeo, frameMat);
+                // 边框放在画作后面
+                frame.position.z = -0.55; 
+                generatorPlane.add(frame);
+                
+                // 标记为生成器对象，避免在 animate 中旋转
+                generatorPlane.userData.isGenerator = true;
+                
+                scene.add(generatorPlane);
+                activeModel = generatorPlane;
+            }
+            // showToast("黎锦图案已生成！");
+        }
+
+        // --- UI 收起/展开逻辑 ---
+        function initUICollapse() {
+            const uiLayer = document.getElementById('ui-layer');
+            const btn = document.getElementById('btn-ui-collapse'); 
+            const navBar = document.getElementById('nav-bar');
+            
+            if(!uiLayer || !btn) return;
+            
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation(); 
+                const isCollapsed = uiLayer.classList.toggle('collapsed');
+                
+                // 联动导航栏
+                // 使用 CSS 类名而非直接样式，利用 CSS transition 实现动画
+                if(isCollapsed) {
+                    navBar.classList.add('hidden-down');
+                } else {
+                    navBar.classList.remove('hidden-down');
+                }
+            });
+        }
+
+        // 初始化
+        try {
+            setupControls();
+            initLandingPage();
+            initGenerator();
+            initAnnotations(); 
+            initUICollapse(); // 初始化 UI 折叠
+            
+            // Start loop
+            animate();
+            console.log("[App] Initialization complete.");
+        } catch(e) {
+            showToast("初始化崩溃: " + e.message);
+            console.error(e);
+        }
+
+    </script>
+</body>
+</html>
