@@ -402,7 +402,7 @@
             padding: 10px; margin-bottom: 8px;
             background: rgba(255,255,255,0.4);
             border-radius: 8px; cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.15s ease-out; /* 优化变为深蓝色的速度 */
             border: 1px solid transparent;
         }
         .artifact-item:hover { background: white; transform: translateX(-3px); }
@@ -413,30 +413,23 @@
 
         /* --- 生成器面板 --- */
         #generator-panel {
-            position: absolute; right: 300px; top: 40px; width: 240px;
-            z-index: 15; 
-            background: var(--glass-bg);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            padding: 20px; border-radius: 12px;
-            border: var(--glass-border);
-            box-shadow: var(--shadow-soft);
-            
-            /* 动画状态 */
-            opacity: 0; 
-            transform: translateX(20px) scale(0.95);
-            pointer-events: none;
-            transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+            width: 100%;
+            margin-top: 15px;
+            background: rgba(255,255,255,0.5);
+            padding: 15px; border-radius: 12px;
+            border: 1px dashed rgba(212, 163, 115, 0.6);
+            display: none; /* 默认隐藏 */
+            box-sizing: border-box;
+            animation: fadeUpIn 0.4s ease forwards;
         }
         #generator-panel.visible {
-            opacity: 1;
-            transform: translateX(0) scale(1);
-            pointer-events: auto;
+            display: block;
         }
 
-        #generator-panel h4 { margin: 0 0 15px 0; color: var(--li-indigo); border-bottom: 1px dashed rgba(23,59,82,0.2); padding-bottom: 10px; }
+        #generator-panel h4 { margin: 0 0 10px 0; color: var(--li-indigo); border-bottom: 1px dashed rgba(23,59,82,0.2); padding-bottom: 8px; font-size: 1rem; }
         
-        .gen-control { margin-bottom: 12px; }
+        .gen-control-row { display: flex; gap: 10px; margin-bottom: 10px; }
+        .gen-control { flex: 1; }
         .gen-control label { display: block; font-size: 0.8rem; font-weight: 700; margin-bottom: 5px; color: rgba(23,59,82,0.7); }
         .gen-control select, .gen-control input[type="color"] {
             width: 100%;
@@ -789,6 +782,46 @@
                 这种建筑形式见证了黎族先民渡海而来的历史记忆，是人与自然和谐共生的典范。
             </p>
         </div>
+
+        <!-- 图腾生成器面板 (移动到了左侧文案下侧) -->
+        <div id="generator-panel">
+            <h4>黎锦图案生成器</h4>
+            <div class="gen-control-row">
+                <div class="gen-control">
+                    <label>图腾纹样</label>
+                    <select id="gen-shape">
+                        <option value="rhombus">菱形 (光影)</option>
+                        <option value="human">人纹 (祖先)</option>
+                        <option value="frog">蛙纹 (多子)</option>
+                        <option value="flower">花章 (吉祥)</option>
+                        <option value="geometry">几何 (天地)</option>
+                    </select>
+                </div>
+                <div class="gen-control">
+                    <label>布局结构</label>
+                    <select id="gen-layout">
+                        <option value="horizontal">条带 (传统)</option>
+                        <option value="cross">菱格 (华彩)</option>
+                        <option value="diagonal">斜向 (现代)</option>
+                        <option value="scatter">散点 (星空)</option>
+                    </select>
+                </div>
+            </div>
+            <div class="gen-control-row">
+                <div class="gen-control">
+                    <label>纹样主色</label>
+                    <input type="color" id="gen-color1" value="#C23A38">
+                </div>
+                <div class="gen-control">
+                    <label>织锦底色</label>
+                    <input type="color" id="gen-color2" value="#173B52">
+                </div>
+            </div>
+            <div class="btn-group">
+                <button id="gen-btn" class="btn-gen">✨ 生成织锦</button>
+                <button id="rand-btn" class="btn-rand" title="随机配色">🎲</button>
+            </div>
+        </div>
         
         <div class="control-panel">
             <div class="control-group">
@@ -829,42 +862,6 @@
         <h3>特色文物</h3>
         <div id="artifact-list">
             <!-- JS 动态生成 -->
-        </div>
-    </div>
-
-    <!-- 图腾生成器面板 (位置调整: right: 400px 避免遮挡侧边栏) -->
-    <div id="generator-panel" style="right: 320px; top: 40px;">
-        <h4>黎锦图案生成器</h4>
-        <div class="gen-control">
-            <label>图腾纹样</label>
-            <select id="gen-shape">
-                <option value="rhombus">菱形纹 (光影)</option>
-                <option value="human">人纹 (祖先)</option>
-                <option value="frog">蛙纹 (多子)</option>
-                <option value="flower">花章纹 (吉祥)</option>
-                <option value="geometry">几何纹 (天地)</option>
-            </select>
-        </div>
-        <div class="gen-control">
-            <label>布局结构</label>
-            <select id="gen-layout">
-                <option value="horizontal">水平条带 (传统)</option>
-                <option value="cross">交叉菱格 (华彩)</option>
-                <option value="diagonal">斜向纹理 (现代)</option>
-                <option value="scatter">散点布局 (星空)</option>
-            </select>
-        </div>
-        <div class="gen-control">
-            <label>纹样主色</label>
-            <input type="color" id="gen-color1" value="#C23A38">
-        </div>
-        <div class="gen-control">
-             <label>织锦底色</label>
-             <input type="color" id="gen-color2" value="#173B52">
-        </div>
-        <div class="btn-group">
-            <button id="gen-btn" class="btn-gen">✨ 生成织锦</button>
-            <button id="rand-btn" class="btn-rand" title="随机配色">🎲</button>
         </div>
     </div>
 
@@ -913,6 +910,7 @@
         import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
         import { PointerLockControls } from 'three/addons/controls/PointerLockControls.js';
         import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+        import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
         // Post-processing imports
         import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
         import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
@@ -1063,19 +1061,51 @@
 
         // --- 物品数据 ---
         // scale 设为 'auto'，程序会自动计算缩放比例
+        const LI_BROCADE_DESC = `
+           <h3>黎锦概述</h3>
+
+<p><b>黎锦</b>是海南岛黎族民间织锦，具有悠久的历史。产于海南岛的黎族居住区，《峒溪纤志》载：“黎人取中国彩帛，拆取色丝和吉贝，织之成锦。”范成大《桂海虞衡志》记载的“黎单”，“黎幕”宋代已远销大陆，“桂林人悉买以为卧具”。</p>
+
+<p>2009年10月，联合国教科文组织正式批准海南省“黎族传统纺染织绣技艺”（以下简称“黎锦技艺”）进入联合国教科文组织首批急需保护的非物质文化遗产名录。2017年3月28日在海南省东方市举办的千人织黎锦展示，获吉尼斯世界纪录“最多人同时织布”荣誉称号。2024年12月5日，联合国教科文组织保护非物质文化遗产政府间委员会第19届常会上，黎锦技艺成功列入《人类非物质文化遗产代表作名录》。</p>
+
+<h3>工艺制作</h3>
+
+<p><b>黎锦</b>是以棉线为主，麻线、丝线和金银线为辅交织而成。其经线多采用缬染法（即扎染），在一个扎线架上编好经线，然后用纱线在经线上扎结，染色后拆去纱线，即出现蓝地白花的图案，再织进彩色纬线。</p>
+<p>纺织、织造的工具仍然沿用古老的传统工具，如手搓去籽十字棍、木制手摇轧花机、脚踏纺纱机和织布机等。</p>
+
+<h3>品种分类</h3>
+
+<p><b>黎锦</b>的品种有妇女统裙、上衣、裤料、被单、头巾、腰带、挂包、披肩、鞋帽等。黎锦的图案有马、鹿、斑鸠、蛇、青蛙、孔雀、鸡以及竹、稻、花卉、水、云彩、星辰等100多种，大多由简单的直线、平行线和方形、三角形、菱形等几何图形构成。</p>
+<p>在色彩上，善于运用明暗间色，青、红、黑、白等色互相配合，形成色彩对比强烈的艺术效果。</p>
+
+<h3>黎锦纹样</h3>
+<p><b>1. 人形纹：</b>寄寓了人们对人丁兴旺、子孙满堂和追求美好生活的强烈愿望。最有代表性的是“婚礼图”，将黎族婚娶礼仪习俗中的迎亲、送亲以及拜堂等活动场面反映在筒裙上，具有鲜明的民族特色。</p>
+            <p><b>2. 动物纹：</b>包含龙凤、水牛、鱼虾、青蛙等，在民间流传很广。其中，龙纹是高贵与吉祥的象征；青蛙纹有表达母爱和避邪的功能，反映在服饰上的蛙纹有严格的对称结构。</p>
+            <p><b>3. 植物纹与几何纹：</b>常见的有木棉纹、花草纹等。木棉是黎族纺织的主要原料之一，以此象征根深叶茂，家庭美满幸福。几何纹则利用直线、方形、菱形等组成，以抽象图案表现在服饰上。</p>
+        `;
+
         const ARTIFACTS = [
-            { id: 'loom', name: '黎锦织机', model: 'assets/models/relic/weaving machine.glb', scale: 'auto' },
-            { id: 'belt', name: '黎族腰带', model: 'assets/models/relic/Li people\'s belt.glb', scale: 'auto' },
-            { id: 'cloth', name: '黎族服饰', model: 'assets/models/relic/cloth.glb', scale: 'auto', img: 'assets/pic/黎族服饰.jpg' },
-            { id: 'ha_brocade', name: '哈方言织锦', model: 'assets/models/relic/Li people\'s Ha dialect brocade.glb', scale: 'auto' },
-            { id: 'meifu_brocade', name: '美孚方言织锦', model: 'assets/models/relic/Li people\'s Meifu dialect brocade.glb', scale: 'auto' },
+            { 
+                id: 'li_brocade_cat', 
+                name: '黎族织锦', 
+                isCategory: true,
+                desc: LI_BROCADE_DESC,
+                model: 'assets/models/relic/weaving machine.glb', // 添加模型路径，使其在展示概览时同时加载织机
+                items: [
+                    { id: 'pattern', name: '黎锦纹样', type: 'popupImage', popupImg: 'assets/pic/黎锦纹样.jpg' },
+                    { id: 'belt', name: '黎族腰带', model: 'assets/models/relic/Li people\'s belt.glb', scale: 'auto' },
+                    { id: 'cloth', name: '黎族服饰', model: 'assets/models/relic/cloth.glb', scale: 'auto', img: 'assets/pic/黎族服饰.jpg' },
+                    { id: 'ha_brocade', name: '哈方言织锦', model: 'assets/models/relic/Li people\'s Ha dialect brocade.glb', scale: 'auto' },
+                    { id: 'meifu_brocade', name: '美孚方言织锦', model: 'assets/models/relic/Li people\'s Meifu dialect brocade.glb', scale: 'auto' },
+                    { id: 'generator', name: '黎锦图案生成器', type: 'generator' }
+                ]
+            },
             { id: 'sculpture', name: '文昌灰塑', model: 'assets/models/relic/WENCHANG ASH SCULPTURE.glb', scale: 'auto', img: 'assets/pic/文昌灰塑.jpg' },
             { id: 'stool', name: '牛皮凳', model: 'assets/models/relic/Cowhide stool.glb', scale: 'auto', desc: '牛皮凳的制作技艺以牛皮、藤条和当地黎语称作“赛胜”的乔木为原料，全程依赖手工完成。制作过程主要包括备料、晾晒、烟熏防虫、框架组装和绷牛皮等工序，制作周期快则四五天，慢则十余天。绷牛皮时需要团队协作，涉及浸泡、刮毛、晒干和固定等步骤。该技艺的传承依靠口传心授的方式。' },
             { id: 'pottery', name: '原始制陶', model: 'assets/models/relic/pottery.glb', scale: 'auto', img: 'assets/pic/原始制陶.jpg' },
             { id: 'canoe', name: '独木器具', model: 'assets/models/relic/canoe.glb', scale: 'auto', img: 'assets/pic/独木器具.jpg' },
             { id: 'bamboo', name: '藤竹编技艺', model: 'assets/models/relic/BAMBOO AND RATTAN WEAVING.glb', scale: 'auto', img: 'assets/pic/藤竹编技艺.jpg' },
-            { id: 'shell', name: '海南贝雕', model: 'assets/models/relic/SHELL CARVING.glb', scale: 'auto', img: 'assets/pic/海南贝雕.jpg' },
-            { id: 'generator', name: '黎锦图案生成器', type: 'generator' }
+            { id: 'shell', name: '海南贝雕', model: 'assets/models/relic/SHELL CARVING.glb', scale: 'auto', img: 'assets/pic/海南贝雕.jpg' }
         ];
 
         // --- 状态对象 (提前声明) ---
@@ -1386,12 +1416,94 @@
         function initArtifactSidebar() {
             const list = document.getElementById('artifact-list');
             list.innerHTML = '';
+            
+            // 添加样式确保子列表正确缩进、滑动查看文字、居中大屏展示
+            if (!document.getElementById('category-style')) {
+                const style = document.createElement('style');
+                style.id = 'category-style';
+                style.innerHTML = `
+                    .artifact-sublist { margin-bottom: 5px; }
+                    .sub-item { margin-left: 15px; font-size: 0.9em; opacity: 0.8; }
+                    .artifact-item.sub-item:hover { background: rgba(255,255,255,0.8); color: #333; }
+                    .sub-item.active { opacity: 1; border-left: 3px solid var(--li-gold); padding-left: 10px; background: var(--li-indigo); color: var(--li-cream); }
+                    .category-header.active { background: var(--li-indigo); color: var(--li-cream); border-color: var(--li-gold); }
+                    
+                    /* 支持滑动查看文字 */
+                    #description-content { 
+                        flex: 1 1 auto;
+                        max-height: 60vh; 
+                        overflow-y: auto; 
+                        padding-right: 15px;
+                        scrollbar-width: thin;
+                        scrollbar-color: var(--li-gold) rgba(0,0,0,0.1);
+                        text-align: justify;
+                        line-height: 1.8;
+                    }
+                    #description-content h3 { color: var(--li-gold); border-bottom: 1px solid rgba(212,163,115,0.3); padding-bottom: 5px; margin-bottom: 10px; margin-top: 20px;}
+                    #description-content h3:first-child { margin-top: 0; }
+                    #description-content p { margin-bottom: 12px; }
+                    #description-content::-webkit-scrollbar { width: 6px; }
+                    #description-content::-webkit-scrollbar-thumb { background: var(--li-gold); border-radius: 3px; }
+                    #description-content::-webkit-scrollbar-track { background: rgba(0,0,0,0.05); border-radius: 3px; }
+
+                    /* 概览模式居中放大动画 */
+                    .side-panel.right { 
+                        transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1); 
+                        transform-origin: right top;
+                    }
+                    /* 在 category-expanded 模式下覆盖默认的宽度和背景，实现居中 */
+                    .side-panel.right.category-expanded {
+                        width: 60vw !important;
+                        max-width: 800px;
+                        right: 50% !important;
+                        top: auto !important;
+                        bottom: auto !important;
+                        transform: translateX(50%) !important;
+                        height: auto !important;
+                        max-height: 80vh !important;
+                        background: var(--glass-bg);
+                        backdrop-filter: blur(20px);
+                        -webkit-backdrop-filter: blur(20px);
+                        border: 2px solid rgba(212, 163, 115, 0.6);
+                        box-shadow: 0 10px 50px rgba(0,0,0,0.6);
+                        z-index: 100;
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+
             ARTIFACTS.forEach((art, idx) => {
-                const item = document.createElement('div');
-                item.className = 'artifact-item';
-                item.innerHTML = `<span>🔹</span> <span>${art.name}</span>`;
-                item.onclick = () => loadArtifactItem(idx);
-                list.appendChild(item);
+                if (art.isCategory) {
+                    const catBox = document.createElement('div');
+                    catBox.className = 'artifact-category';
+                    catBox.innerHTML = `
+                        <div class="artifact-item category-header" data-id="${idx}" onclick="window.loadArtifactItem(${idx}, -1)">
+                            <span>📂</span> <span><b>${art.name}</b></span>
+                        </div>
+                        <div class="artifact-sublist" id="sublist-${idx}"></div>
+                    `;
+                    list.appendChild(catBox);
+
+                    const subList = catBox.querySelector('.artifact-sublist');
+                    art.items.forEach((sub, subIdx) => {
+                        const subItem = document.createElement('div');
+                        subItem.className = 'artifact-item sub-item';
+                        subItem.dataset.id = `${idx}-${subIdx}`;
+                        subItem.innerHTML = `<span>🔹</span> <span>${sub.name}</span>`;
+                        subItem.onclick = (e) => {
+                            e.stopPropagation();
+                            window.loadArtifactItem(idx, subIdx);
+                        };
+                        subList.appendChild(subItem);
+                    });
+                } else {
+                    const item = document.createElement('div');
+                    item.className = 'artifact-item';
+                    item.dataset.id = `${idx}`;
+                    item.innerHTML = `<span>🔹</span> <span>${art.name}</span>`;
+                    item.onclick = () => window.loadArtifactItem(idx);
+                    list.appendChild(item);
+                }
             });
         }
 
@@ -1412,68 +1524,165 @@
             activeModel = null;
         };
 
-        function loadArtifactItem(index) {
+        // 挂载到 window 对象以供内联的 onclick 处理器以及模块内的回调使用
+        window.loadArtifactItem = function(index, subIndex = -1) {
             // 生成唯一请求 ID，防止旧请求覆盖新请求
             const requestId = ++pendingArtifactRequestId;
             
-            const items = document.querySelectorAll('.artifact-item');
-            items.forEach((it, i) => it.classList.toggle('active', i === index));
+            // 切换文物时自动关闭图片查看器
+            const imageViewer = document.getElementById('image-viewer');
+            if (imageViewer) imageViewer.classList.remove('visible');
 
-            const artData = ARTIFACTS[index];
-            // showToast(`正在加载: ${artData.name}`);
+            // 更新活跃状态 UI
+            document.querySelectorAll('.artifact-item').forEach(it => it.classList.remove('active'));
             
-            // 立即清理当前模型，确保场景干净
-            cleanupCurrentArtifact();
-            generatorPlane = null; 
+            // 修正：选择器的引号转义问题，改用更通用的方式寻找元素
+            const allItems = document.querySelectorAll('.artifact-item');
+            allItems.forEach(it => {
+                if (subIndex === -1) {
+                    if (it.dataset.id === `${index}`) {
+                        it.classList.add('active');
+                    }
+                } else {
+                    if (it.dataset.id === `${index}-${subIndex}`) {
+                        it.classList.add('active');
+                        // 高亮父类
+                        const parentHeader = it.closest('.artifact-category')?.querySelector('.category-header');
+                        if (parentHeader) parentHeader.classList.add('active');
+                    }
+                }
+            });
 
-            // 更新大标题
-            const mainTitle = document.getElementById('main-title');
-            if (mainTitle) {
-                mainTitle.innerText = artData.name;
-                triggerAnim(mainTitle); // 动画
+            let artData;
+            // 确保数据存在
+            if (!ARTIFACTS[index]) return;
+            
+            if (subIndex === -1) {
+                artData = ARTIFACTS[index];
+            } else {
+                artData = ARTIFACTS[index].items[subIndex];
             }
 
-            // 更新展示区域：图片或描述
             const visualArea = document.getElementById('desc-content');
             const textArea = document.getElementById('description-content');
-            
-            if (visualArea) {
-                if (artData.img) {
-                    visualArea.innerHTML = `<img src="${artData.img}" style="width:100%; border-radius:8px; margin-bottom:15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); cursor:pointer;" onclick="showAnnotationImage({img:'${artData.img}'})">`;
-                    triggerAnim(visualArea); // 动画
-                } else {
-                    visualArea.innerHTML = '';
-                    visualArea.classList.remove('anim-fade-up');
-                }
-            }
+            const sidePanel = document.querySelector('.side-panel.right');
 
-            if (textArea) {
-                if (artData.desc) {
-                    textArea.innerHTML = `<p>${artData.desc}</p>`;
-                    triggerAnim(textArea); // 动画
-                } else {
-                    textArea.innerHTML = '';
-                    textArea.classList.remove('anim-fade-up');
+            // [逻辑分支] 处理分类概览与具体文物
+            const mainTitle = document.getElementById('main-title'); // 提前定义大标题DOM获取
+            
+            if (artData.isCategory) {
+                cleanupCurrentArtifact();
+                generatorPlane = null;
+                document.getElementById('generator-panel')?.classList.remove('visible');
+                document.getElementById('main-title').innerText = artData.name;
+                
+                // 1. 移除“精品陈列”小块，文字区域全宽展示
+                if (visualArea) visualArea.innerHTML = '';
+                
+                if (textArea) {
+                    textArea.innerHTML = artData.desc;
+                    // 2. 模式切换动画：使右侧面板加宽并居中
+                    if (sidePanel) sidePanel.classList.add('category-expanded');
+                }
+                
+                triggerAnim(document.getElementById('main-title'));
+                triggerAnim(textArea);
+                
+                // 加载该分类关联的模型（如织锦分类加载织机），并不提前返回，而是继续走下面的模型加载逻辑
+                if (!artData.model) {
+                    if (document.getElementById('loader')) document.getElementById('loader').style.display = 'none';
+                    return;
+                }
+            } else {
+                // 如果是具体文物，恢复侧边栏样式
+                if (sidePanel) sidePanel.classList.remove('category-expanded');
+
+                // showToast(`正在加载: ${artData.name}`);
+                
+                // 立即清理当前模型，确保场景干净
+                cleanupCurrentArtifact();
+                generatorPlane = null; 
+
+                // 更新大标题
+                // const mainTitle = document.getElementById('main-title'); // 已经在前面定义过了
+                if (mainTitle) {
+                    mainTitle.innerText = artData.name;
+                    triggerAnim(mainTitle); // 动画
+                }
+
+                // 更新展示区域：图片或描述
+                if (visualArea) {
+                    if (artData.img) {
+                        visualArea.innerHTML = `<img src="${artData.img}" style="width:100%; border-radius:8px; margin-bottom:15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); cursor:pointer;" onclick="showAnnotationImage({img:'${artData.img}'})">`;
+                        triggerAnim(visualArea); // 动画
+                    } else {
+                        visualArea.innerHTML = '';
+                        visualArea.classList.remove('anim-fade-up');
+                    }
+                }
+
+                if (textArea) {
+                    if (artData.desc) {
+                        textArea.innerHTML = `<p>${artData.desc}</p>`;
+                        triggerAnim(textArea); // 动画
+                    } else {
+                        // 3. 删除“隶属于”标注
+                        textArea.innerHTML = '';
+                        textArea.classList.remove('anim-fade-up');
+                    }
                 }
             }
 
             const genPanel = document.getElementById('generator-panel');
             const loader = document.getElementById('loader');
 
-            // 特殊处理：生成器
+            // 特殊处理：黎锦图案生成器
             if (artData.type === 'generator') {
                 if (loader) loader.style.display = 'none';
                 if(genPanel) genPanel.classList.add('visible');
+                
+                // 更新大标题和文案
+                if (mainTitle) {
+                    mainTitle.innerText = artData.name;
+                    triggerAnim(mainTitle);
+                }
+                if (textArea) {
+                    textArea.innerHTML = `<img src="assets/pic/黎锦纹样2.jpg" style="width:100%; border-radius:8px; margin-bottom:15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+<h3>黎锦纹样</h3><p><b>人形纹</b>主要有婚礼图、舞蹈图、青春幸福图、百人图、丰收欢乐图、人丁兴旺图、放牧图、吉祥平安图等，它寄寓了人们对生育繁衍、人丁兴旺、子孙满堂和追求美好生活的强烈愿望。黎族妇女通过夸张和变形的工艺创造手法，把黎族人民的生活、生产场景反映在织物上，使图案造型具有可视性和艺术性。最有代表性的是婚礼图，它主要流行于乐东、三亚、东方等市县，是典型的人形纹样，它将黎族婚娶礼仪习俗中的迎亲、送亲以及送彩礼和拜堂等活动场面反映在筒裙上，描绘了新郎新娘和前来参加婚礼的众多村民的画面。其场面开阔，热烈壮观，内容丰富，具有鲜明的民族特色和浓郁的地域风情。</p> <p><b>动物纹</b>主要有龙凤、黄猄、水牛、水鹿、鱼虾、青蛙、乌鸦、鸽子、蜜蜂、蝴蝶等，其中，龙纹、青蛙纹最为常见。龙纹是流行在白沙、琼中一带最为普遍的黎锦图案，反映了黎族人民把龙当作高贵、吉祥、幸福和美好的象征。青蛙纹图案在民间流传很广，在黎族的传统观念里，青蛙有表达母爱和避邪的功能。反映在服饰上的蛙纹有严格的对称结构，图案以“田”字形纹样为主体，中间有四只具有抽象性的青蛙纹，用动和静的对比手法，显示青蛙在田间生活的主要特征，画面充实，节奏协调。有的地方的青蛙纹样，采用夸张与变形的表现手法，把青蛙前腿省略，后脚加长，表现出青蛙跃跃欲跳的神态，图案构思大胆，造型简洁，具有独特的民族风格。</p> <p><b>植物纹</b>主要有木棉花、泥嫩花、龙骨花、竹叶花等花卉，以及藤、树木、青草等。常见的有木棉纹、花草纹等。木棉是黎族纺织的主要原料之一，黎族妇女普遍喜欢用木棉纹样做为织锦纹样，图案以木棉树为主，有根部、分枝，分枝下有钥匙纹（又称“任意花”），还有花和绿叶，以此象征根深叶茂，家庭美满幸福。花草纹流行于五指山地区一带服饰图案纹样，图案以长柱形花纹作族系标志，整体纹饰近似汉文的倒“巾”字形，上有野草和菱形连续纹样。寓意根深叶茂，家族人丁兴旺，繁衍生息。</p> <p><b>几何纹</b>是利用直线、平行线、方形、菱形、三角形等组成的纹样，以抽象的图案表现在服饰上，反映出原始思维的某些特征。其内容丰富，色彩美观。</p>`;
+                    triggerAnim(textArea);
+                }
+                
                 // 自动生成一次默认的
                 generatePattern();
                 return;
             } else {
                 if(genPanel) genPanel.classList.remove('visible');
             }
+
+            // 特殊处理：纯弹窗大图模式（如黎锦纹样）
+            if (artData.type === 'popupImage') {
+                if (loader) loader.style.display = 'none';
+                if (typeof showAnnotationImage === 'function' && artData.popupImg) {
+                    showAnnotationImage({ img: artData.popupImg });
+                }
+                return;
+            }
+
+            // 这里如果是没有模型路径的条目，不能直接交给 GLTFLoader 加载 undefined，它会导致 three.js 抛错
+            if (!artData.model) {
+                if (loader) loader.style.display = 'none';
+                return; // 跳过模型加载
+            }
             
             if (loader) loader.style.display = 'flex';
 
+            const dracoLoader = new DRACOLoader();
+            // 设置 Draco 解压库的路径，通常使用 Google 托管的 CDN 或本地拷贝
+            dracoLoader.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.7/');
+
             const gltfLoader = new GLTFLoader();
+            gltfLoader.setDRACOLoader(dracoLoader);
+            
             gltfLoader.load(
                 artData.model, 
                 (gltf) => {
@@ -1696,7 +1905,7 @@
                 if (type === 'village') {
                     loadVillageTiles();
                 } else {
-                    loadArtifactItem(0);
+                    window.loadArtifactItem(0);
                 }
             } catch(e) {
                 console.error(e);
