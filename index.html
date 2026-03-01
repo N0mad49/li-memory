@@ -153,6 +153,7 @@
             animation: slideIn 0.3s ease;
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
             max-width: 300px;
+            white-space: pre-line; /* 允许换行符 */
         }
         @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
 
@@ -1097,7 +1098,7 @@
                     { id: 'cloth', name: '黎族服饰', model: 'assets/models/relic/cloth.glb', scale: 'auto', img: 'assets/pic/黎族服饰.jpg' },
                     { id: 'ha_brocade', name: '哈方言织锦', model: 'assets/models/relic/Li people\'s Ha dialect brocade.glb', scale: 'auto' },
                     { id: 'meifu_brocade', name: '美孚方言织锦', model: 'assets/models/relic/Li people\'s Meifu dialect brocade.glb', scale: 'auto' },
-                    { id: 'generator', name: '黎锦图案生成器', type: 'generator' }
+                    { id: 'generator', name: '🎨 黎锦图案生成器', type: 'generator' }
                 ]
             },
             { id: 'sculpture', name: '文昌灰塑', model: 'assets/models/relic/WENCHANG ASH SCULPTURE.glb', scale: 'auto', img: 'assets/pic/文昌灰塑.jpg' },
@@ -1249,11 +1250,47 @@
                         // [修复] 进入无人机模式前，重置相机 UP 向量，防止视角倾斜
                         camera.up.set(0, 1, 0); 
                         
-                        pointerControls.lock();
-                        showToast("进入无人机模式 (按 ESC 退出)");
+                        // 尝试锁定，使用延迟避免快速切换导致的 Promise 错误
+                        setTimeout(() => {
+                            // 再次检查此时是否仍处于无人机模式
+                            const currentMode = document.querySelector('input[name="viewMode"]:checked').value;
+                            if (currentMode !== 'drone') return; // 用户已经切走了，取消锁定
+
+                            try {
+                                // 兼容性处理：部分浏览器 requestPointerLock 返回 Promise
+                                // PointerLockControls.lock() 只是简单调用 domElement.requestPointerLock()
+                                // 我们手动调用以捕获 Promise 错误
+                                // 必须使用与 controls 绑定的 domElement (即 canvas) 否则事件无法正确传递
+                                const element = pointerControls.domElement || renderer.domElement; 
+                                const promise = element.requestPointerLock({
+                                    unadjustedMovement: true,
+                                });
+                                
+                                if (promise) {
+                                  promise.catch(err => {
+                                      console.warn("PointerLock request failed (harmless):", err);
+                                      // 不做回退处理，因为这通常意味着用户已经手动退出了（ESC）
+                                  });
+                                }
+                            } catch (err) {
+                                console.warn("PointerLock synchronous error:", err);
+                            }
+                        }, 100);
+
+                        showToast(`已进入无人机探索模式
+按 ESC 退出
+WASD 移动
+Q 上升
+E 下降
+Mouse 视角`);
                     } else {
                         droneMode = false;
-                        pointerControls.unlock();
+                        
+                        // 如果正在锁定中，才解锁
+                        if (document.pointerLockElement) {
+                             document.exitPointerLock(); 
+                        }
+                        
                         controls.enabled = true;
                         
                         // [修复] 退出无人机模式时，需要更新 OrbitControls 的 target
@@ -1270,54 +1307,44 @@
             document.addEventListener('pointerlockchange', () => {
                 const isLocked = (document.pointerLockElement === document.body || document.pointerLockElement === renderer.domElement);
                 
-                if (!isLocked && droneMode) {
-                    // 用户按 ESC 强制退出了锁定，我们需要同步 UI 和状态
-                    droneMode = false;
-                    controls.enabled = true;
-                    
-                    // 必不可少：同步 OrbitControls 的 target，防止视角跳变
-                    const forward = new THREE.Vector3(0, 0, -1).applyQuaternion(camera.quaternion);
-                    controls.target.copy(camera.position).add(forward.multiplyScalar(20));
-                    controls.update();
-                    
-                    // UI 反馈
-                    const orbitRadio = document.getElementById('mode-orbit');
-                    if (orbitRadio) orbitRadio.checked = true;
-                }
-            });
-
-            // 监听 PointerLock 状态变化，处理 ESC 退出情况以及状态同步
-            document.addEventListener('pointerlockchange', () => {
-                // 判断当前是否处于锁定状态
-                const isLocked = (document.pointerLockElement === document.body || document.pointerLockElement === renderer.domElement);
+                // 如果是锁定状态
                 if (isLocked) {
-                    droneMode = true;
-                    controls.enabled = false;
-                    
-                    // [关键] 每次重新进入锁定时，重置相机 UP，避免歪头
-                    camera.up.set(0, 1, 0);
-
-                    // 同步 UI 状态
-                    const droneRadio = document.getElementById('mode-drone');
-                    if (droneRadio) droneRadio.checked = true;
+                    if (!droneMode) {
+                        droneMode = true; 
+                        controls.enabled = false;
+                        camera.up.set(0, 1, 0);
+                        const droneRadio = document.getElementById('mode-drone');
+                        if (droneRadio && !droneRadio.checked) droneRadio.checked = true;
+                    }
                 } else {
                     // 如果从锁定变成非锁定（例如按 ESC，或者切 TAB），我们强制回退到 Orbit 模式
-                    // 除非这里有特殊逻辑，比如暂停。但对于本应用，解锁即退出
                     if (droneMode) {
                         droneMode = false;
                         controls.enabled = true;
                         
                         // [关键修复] 计算新的 Orbit Target，防止相机立刻弹回去
-                        // 我们让它看向当前相机前方 20 米的地方
                         const forward = new THREE.Vector3(0, 0, -1).applyQuaternion(camera.quaternion);
                         controls.target.copy(camera.position).add(forward.multiplyScalar(20));
                         controls.update();
 
                         const orbitRadio = document.getElementById('mode-orbit');
-                        if (orbitRadio) orbitRadio.checked = true;
+                        if (orbitRadio && !orbitRadio.checked) orbitRadio.checked = true;
                     }
                 }
             });
+
+            // 添加错误监听处理 Promise Fail
+            document.addEventListener('pointerlockerror', (e) => {
+                console.warn('PointerLock error:', e);
+                // 如果锁定失败，确保 UI 回退到 Orbit 模式
+                if (droneMode) {
+                    droneMode = false;
+                    controls.enabled = true;
+                    const orbitRadio = document.getElementById('mode-orbit');
+                    if (orbitRadio) orbitRadio.checked = true;
+                }
+            });
+
 
             // 视觉风格切换监听 (已移除点云模式)
             // document.querySelectorAll('input[name="visualStyle"]').forEach(...)
@@ -1487,9 +1514,10 @@
                     const subList = catBox.querySelector('.artifact-sublist');
                     art.items.forEach((sub, subIdx) => {
                         const subItem = document.createElement('div');
-                        subItem.className = 'artifact-item sub-item';
+                        subItem.className = 'artifact-item sub-item' + (sub.type === 'generator' ? ' highlight-generator' : '');
                         subItem.dataset.id = `${idx}-${subIdx}`;
-                        subItem.innerHTML = `<span>🔹</span> <span>${sub.name}</span>`;
+                        const icon = sub.type === 'generator' ? '' : '<span>🔹</span>';
+                        subItem.innerHTML = `${icon} <span>${sub.name}</span>`;
                         subItem.onclick = (e) => {
                             e.stopPropagation();
                             window.loadArtifactItem(idx, subIdx);
